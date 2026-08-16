@@ -1,324 +1,423 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Input Penjualan - DELTA COMPUTER</title>
-  <style>
-    :root {
-      --bg: #f4f6f9;
-      --card: #ffffff;
-      --text: #1c1c1e;
-      --muted: #8e8e93;
-      --border: #e5e5ea;
-      --primary: #2c6bed;
-      --primary-soft: rgba(44, 107, 237, 0.12);
-      --danger: #ff3b30;
-      --danger-soft: #fff0f0;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #1c1c1e; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-
-    .modal-container {
-      background: var(--card);
-      width: 100%;
-      max-width: 480px;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--bg);
-      font-size: 14px;
-      color: var(--text);
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .form-group input:focus {
-      border-color: var(--primary);
-      background: var(--card);
-      box-shadow: 0 0 0 3px var(--primary-soft);
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 24px 0 14px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .btn-add {
-      background: var(--primary-soft);
-      color: var(--primary);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-add:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .item-row {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 12px;
-      transition: all 0.2s;
-    }
-
-    .item-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    .item-grid .full {
-      grid-column: 1 / -1;
-    }
-
-    .item-field {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .item-field label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-
-    .item-field input {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--card);
-      color: var(--text);
-      padding: 8px 10px;
-      font-size: 13px;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .item-field input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-soft);
-    }
-
-    .item-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border);
-    }
-
-    .item-subtotal {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .item-subtotal b {
-      color: var(--primary);
-      font-size: 14px;
-    }
-
-    .btn-remove {
-      border: none;
-      background: var(--danger-soft);
-      color: var(--danger);
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .btn-remove:hover {
-      background: var(--danger);
-      color: white;
-    }
-
-    .summary-card {
-      background: var(--primary-soft);
-      border-radius: 16px;
-      padding: 16px;
-      margin-top: 20px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .summary-row.total {
-      margin-bottom: 0;
-      padding-top: 8px;
-      border-top: 1px solid rgba(44, 107, 237, 0.2);
-    }
-
-    .summary-row.total span {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .summary-row.total b {
-      font-size: 18px;
-      color: var(--primary);
-    }
-
-    @media(max-width: 400px) {
-      .item-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Notes - One UI Cloud</title>
+<style>
+:root{--bg:#f6f6f8;--card:#fff;--text:#17171a;--muted:#777980;--primary:#315efb;--primary-soft:#eaf0ff;--border:#e7e7eb;--success:#198754;--warning:#d98200;--danger:#dc3545;--shadow:0 4px 20px rgba(0,0,0,.05)}
+.dark{--bg:#101114;--card:#1b1c20;--text:#f5f5f5;--muted:#999ba3;--primary:#7895ff;--primary-soft:#252d49;--border:#2b2c31;--success:#53c98a;--warning:#ffb74d;--danger:#ff6b6b;--shadow:0 5px 20px rgba(0,0,0,.25)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"SamsungOne","Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);padding-bottom:90px}
+button,input,textarea,select{font-family:inherit}
+.header{max-width:900px;margin:auto;padding:28px 20px 18px}
+.header-top{display:flex;justify-content:space-between;align-items:center}
+.greeting{color:var(--muted);font-size:13px;margin-bottom:5px}
+.header h1{font-size:32px;letter-spacing:-1px}
+.theme-btn{width:45px;height:45px;border:0;border-radius:50%;background:var(--card);color:var(--text);box-shadow:var(--shadow);cursor:pointer;font-size:20px}
+.container{max-width:900px;margin:auto;padding:0 20px}
+.page{display:none}.page.active{display:block}
+.search{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:19px;padding:13px 16px;margin-bottom:15px;box-shadow:var(--shadow)}
+.search span{font-size:20px}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--text)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:25px;padding:20px;box-shadow:var(--shadow)}
+.section-title{font-size:20px;font-weight:700;margin:24px 0 13px}
+.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.summary-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.summary-icon{font-size:23px;margin-bottom:12px}.summary-label{font-size:12px;color:var(--muted)}.summary-value{font-size:20px;font-weight:700;margin-top:4px}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quick button{border:0;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:17px 8px;cursor:pointer}
+.quick-icon{display:block;font-size:24px;margin-bottom:6px}
+.sale-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.sale-top{display:flex;justify-content:space-between;gap:10px}.sale-customer{font-size:17px;font-weight:700}.sale-number{color:var(--muted);font-size:11px;margin-top:3px}.sale-total{font-size:18px;font-weight:700}
+.sale-info{color:var(--muted);font-size:12px;margin-top:12px}
+.status{display:inline-block;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-top:10px}
+.status.lunas{background:#e6f7ed;color:var(--success)}.status.kurang{background:#fff3df;color:var(--warning)}.status.kembali{background:var(--primary-soft);color:var(--primary)}
+.note{background:var(--card);border:1px solid var(--border);border-radius:23px;padding:19px;margin-bottom:12px}.note h3{margin-bottom:7px}.note p{color:var(--muted);font-size:14px;line-height:1.5}
+.file{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:10px}.file-icon{width:48px;height:48px;border-radius:15px;background:var(--primary-soft);display:flex;justify-content:center;align-items:center;font-size:23px}.file-info{flex:1}.file-name{font-weight:700}.file-meta{color:var(--muted);font-size:11px;margin-top:4px}
+.empty{text-align:center;color:var(--muted);padding:35px 10px}
+.fab{position:fixed;right:22px;bottom:92px;width:58px;height:58px;border:0;border-radius:19px;background:var(--primary);color:#fff;font-size:30px;box-shadow:0 8px 25px rgba(49,94,251,.3);cursor:pointer;z-index:20}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:76px;background:var(--card);border-top:1px solid var(--border);z-index:10}.nav-inner{max-width:650px;height:100%;margin:auto;display:flex}
+.nav{flex:1;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:11px}.nav-icon{display:block;font-size:23px;margin-bottom:4px}.nav.active{color:var(--primary);font-weight:700}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);display:none;align-items:flex-end;justify-content:center;z-index:100}.overlay.show{display:flex}
+.modal{width:100%;max-width:650px;max-height:92vh;overflow:auto;background:var(--card);border-radius:30px 30px 0 0;padding:24px 20px 30px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.modal-head h2{font-size:23px}.close{width:38px;height:38px;border:0;border-radius:50%;background:var(--primary-soft);color:var(--text);cursor:pointer}
+.form-group{margin-bottom:14px}.form-group label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.form-group input,.form-group textarea,.form-group select{width:100%;border:1px solid var(--border);border-radius:15px;background:var(--bg);color:var(--text);padding:13px;outline:none}.form-group textarea{min-height:100px;resize:vertical}
+.items-header{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}.items-title{font-weight:700}.add-item{border:0;background:var(--primary-soft);color:var(--primary);border-radius:13px;padding:8px 12px;cursor:pointer;font-weight:700}
+.item-row{background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:10px}.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.item-grid .full{grid-column:1/-1}
+.item-total{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px}.remove-item{border:0;background:transparent;color:var(--danger);cursor:pointer}
+.total-box{background:var(--primary-soft);border-radius:20px;padding:17px;margin:18px 0}.total-line{display:flex;justify-content:space-between;margin-bottom:8px}.total-line:last-child{margin-bottom:0}.grand-total{font-size:20px;font-weight:700;padding-top:9px;border-top:1px solid rgba(0,0,0,.08)}
+.payment-result{border-radius:18px;padding:15px;margin:12px 0;font-size:14px}.payment-lunas{background:#e6f7ed;color:var(--success)}.payment-kurang{background:#fff3df;color:var(--warning)}.payment-kembali{background:var(--primary-soft);color:var(--primary)}
+.submit{width:100%;border:0;border-radius:17px;padding:15px;background:var(--primary);color:white;font-weight:700;cursor:pointer;font-size:15px}.delete-btn{border:0;background:transparent;color:var(--danger);cursor:pointer;font-size:13px}
+@media(min-width:700px){.summary{grid-template-columns:repeat(4,1fr)}.overlay{align-items:center}.modal{border-radius:30px}}
+</style>
 </head>
 <body>
+<header class="header"><div class="header-top"><div><div class="greeting">Catatan pekerjaan pribadi</div><h1 id="pageTitle">Beranda</h1></div><button class="theme-btn" onclick="toggleDark()">◐</button></div></header>
 
-  <div class="modal-container">
-    <div class="form-group">
-      <label>No. HP / Kontak (opsional)</label>
-      <input type="text" placeholder="08xxxxxxxxxx">
-    </div>
+<main class="container">
+<section id="home" class="page active">
+<div class="card"><div class="greeting">Hari ini</div><h2 id="today"></h2></div>
+<div class="section-title">Ringkasan</div>
+<div class="summary">
+<div class="summary-card"><div class="summary-icon">💰</div><div class="summary-label">Total Penjualan</div><div class="summary-value" id="dashboardSales">Rp0</div></div>
+<div class="summary-card"><div class="summary-icon">🧾</div><div class="summary-label">Transaksi</div><div class="summary-value" id="dashboardTransactions">0</div></div>
+<div class="summary-card"><div class="summary-icon">📝</div><div class="summary-label">Notes</div><div class="summary-value" id="dashboardNotes">0</div></div>
+<div class="summary-card"><div class="summary-icon">📁</div><div class="summary-label">Files</div><div class="summary-value" id="dashboardFiles">0</div></div>
+</div>
+<div class="section-title">Akses cepat</div>
+<div class="quick">
+<button onclick="openSaleModal()"><span class="quick-icon">💰</span>Penjualan</button>
+<button onclick="openNoteModal()"><span class="quick-icon">📝</span>Note</button>
+<button onclick="openFileModal()"><span class="quick-icon">📁</span>File</button>
+</div>
+<div class="section-title">Transaksi terbaru</div><div id="recentSales"></div>
+</section>
 
-    <div class="form-group">
-      <label>Tanggal Transaksi</label>
-      <input type="date" id="tgl-transaksi">
-    </div>
+<section id="sales" class="page">
+<div class="search"><span>⌕</span><input placeholder="Cari pelanggan atau barang..." oninput="searchSales(this.value)"></div>
+<div class="card"><div class="greeting">Total nilai penjualan</div><div id="salesTotal" style="font-size:29px;font-weight:700;margin-top:5px">Rp0</div></div>
+<div class="section-title">Daftar transaksi</div><div id="salesList"></div>
+</section>
 
-    <div class="section-header">
-      <span class="section-title">Daftar Barang</span>
-      <button class="btn-add" onclick="addItem()">+ Barang</button>
-    </div>
+<section id="notes" class="page">
+<div class="search"><span>⌕</span><input placeholder="Cari catatan..." oninput="searchNotes(this.value)"></div>
+<div id="notesList"></div>
+</section>
 
-    <div id="items"></div>
+<section id="files" class="page">
+<div class="search"><span>⌕</span><input placeholder="Cari file..." oninput="searchFiles(this.value)"></div>
+<div id="filesList"></div>
+</section>
+</main>
 
-    <div class="summary-card">
-      <div class="summary-row">
-        <span>Total Barang</span>
-        <b id="total-barang">0</b>
-      </div>
-      <div class="summary-row total">
-        <span>Total Tagihan</span>
-        <b id="total-tagihan">Rp 0</b>
-      </div>
-    </div>
+<button class="fab" onclick="openCurrentModal()">+</button>
 
-    <div class="form-group" style="margin-top: 16px;">
-      <label>Jumlah Pembayaran</label>
-      <input type="number" placeholder="0" oninput="calculateTotal()">
-    </div>
-  </div>
+<nav class="bottom-nav"><div class="nav-inner">
+<button class="nav active" onclick="showPage('home',this)"><span class="nav-icon">⌂</span>Beranda</button>
+<button class="nav" onclick="showPage('sales',this)"><span class="nav-icon">₽</span>Penjualan</button>
+<button class="nav" onclick="showPage('notes',this)"><span class="nav-icon">▤</span>Note</button>
+<button class="nav" onclick="showPage('files',this)"><span class="nav-icon">▱</span>Files</button>
+</div></nav>
 
-  <script>
-    let itemCounter = 0;
+<div class="overlay" id="overlay"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Tambah</h2><button class="close" onclick="closeModal()">✕</button></div><div id="modalContent"></div></div></div>
 
-    document.getElementById('tgl-transaksi').valueAsDate = new Date();
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { 
+    getDatabase, 
+    ref, 
+    push, 
+    remove, 
+    onValue 
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    function addItem() {
-      itemCounter++;
-      let id = itemCounter;
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEQ112S4jQYD8lFMdaQ2UDYZ3KtgewQgI",
+    authDomain: "project-7cbcc.firebaseapp.com",
+    databaseURL: "https://project-7cbcc-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "project-7cbcc",
+    storageBucket: "project-7cbcc.firebasestorage.app",
+    messagingSenderId: "644697990603",
+    appId: "1:644697990603:web:54be670bc27a1c251a424e",
+    measurementId: "G-7FPXFCX3JW"
+  };
 
-      let itemHtml = `
-        <div class="item-row" id="item-${id}">
-          <div class="item-grid">
-            <div class="item-field full">
-              <label>Nama Barang</label>
-              <input type="text" class="item-name" placeholder="Contoh: Banner 3x1m">
-            </div>
-            <div class="item-field">
-              <label>Harga Satuan</label>
-              <input type="number" class="item-price" placeholder="50000" min="0" oninput="calculateTotal()">
-            </div>
-            <div class="item-field">
-              <label>Jumlah</label>
-              <input type="number" class="item-qty" value="1" min="1" oninput="calculateTotal()">
-            </div>
-          </div>
-          <div class="item-footer">
-            <span class="item-subtotal">Subtotal: <b id="subtotal-${id}">Rp 0</b></span>
-            <button class="btn-remove" onclick="removeItem(${id})">Hapus</button>
-          </div>
-        </div>
-      `;
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-      document.getElementById("items").insertAdjacentHTML("beforeend", itemHtml);
-      calculateTotal();
-    }
+  const salesRef = ref(db, "sales");
+  const notesRef = ref(db, "notes");
+  const filesRef = ref(db, "files");
 
-    function removeItem(id) {
-      let elem = document.getElementById(`item-${id}`);
-      if (elem) {
-        elem.remove();
-        calculateTotal();
-      }
-    }
+  let sales = [];
+  let notes = [];
+  let files = [];
+  let currentPage = "home", itemCounter = 0;
 
-    function calculateTotal() {
-      let rows = document.querySelectorAll('.item-row');
-      let grandTotal = 0;
-      let totalQtyCount = 0;
+  // Realtime listeners
+  onValue(salesRef, (snapshot) => {
+    const data = snapshot.val();
+    sales = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse() : [];
+    renderAll();
+  });
 
-      rows.forEach(row => {
-        let price = parseFloat(row.querySelector('.item-price').value) || 0;
-        let qty = parseInt(row.querySelector('.item-qty').value) || 0;
-        let subtotal = price * qty;
+  onValue(notesRef, (snapshot) => {
+    const data = snapshot.val();
+    notes = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse() : [];
+    renderAll();
+  });
 
-        grandTotal += subtotal;
-        totalQtyCount += qty;
+  onValue(filesRef, (snapshot) => {
+    const data = snapshot.val();
+    files = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse() : [];
+    renderAll();
+  });
 
-        let subtotalElem = row.querySelector('.item-subtotal b');
-        if (subtotalElem) {
-          subtotalElem.innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
-        }
-      });
+  // Attach methods to window for HTML inline events
+  window.showPage = function(page, button) {
+    currentPage = page;
+    document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+    document.querySelectorAll(".nav").forEach(x => x.classList.remove("active"));
+    button.classList.add("active");
+    document.getElementById("pageTitle").textContent = {home:"Beranda", sales:"Penjualan", notes:"Note", files:"Files"}[page];
+    renderAll();
+  };
 
-      document.getElementById('total-barang').innerText = totalQtyCount;
-      document.getElementById('total-tagihan').innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
-    }
+  window.toggleDark = function() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("dark", document.body.classList.contains("dark"));
+  };
+  if(localStorage.getItem("dark") === "true") document.body.classList.add("dark");
 
+  window.openModal = function(title, html) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalContent").innerHTML = html;
+    document.getElementById("overlay").classList.add("show");
+  };
+
+  window.closeModal = function() {
+    document.getElementById("overlay").classList.remove("show");
+  };
+
+  window.openSaleModal = function() {
+    itemCounter = 0;
+    openModal("Tambah Penjualan", `
+      <div class="form-group"><label>Nama Pelanggan</label><input id="customer" placeholder="Contoh: Budi"></div>
+      <div class="form-group"><label>No. HP / Kontak (opsional)</label><input id="phone" placeholder="08xxxxxxxxxx"></div>
+      <div class="form-group"><label>Tanggal Transaksi</label><input id="saleDate" type="date" value="${todayISO()}"></div>
+      <div class="items-header"><div class="items-title">Daftar Barang</div><button class="add-item" onclick="addItem()">+ Barang</button></div>
+      <div id="items"></div>
+      <div class="total-box"><div class="total-line"><span>Total Barang</span><b id="itemCount">0</b></div><div class="total-line grand-total"><span>Total Tagihan</span><span id="grandTotal">Rp0</span></div></div>
+      <div class="form-group"><label>Jumlah Pembayaran</label><input id="payment" type="number" min="0" placeholder="0" oninput="calculatePayment()"></div>
+      <div id="paymentResult"></div>
+      <div class="form-group"><label>Jatuh Tempo</label><input id="dueDate" type="date"><small style="display:block;color:var(--muted);margin-top:5px">Isi jika ada pembayaran yang belum lunas.</small></div>
+      <div class="form-group"><label>Keterangan</label><textarea id="description" placeholder="Catatan tambahan..."></textarea></div>
+      <button class="submit" onclick="saveSale()">Simpan Transaksi (Cloud)</button>
+    `);
     addItem();
-  </script>
+  };
 
+  window.addItem = function() {
+    itemCounter++; let id = itemCounter;
+    document.getElementById("items").insertAdjacentHTML("beforeend", `
+      <div class="item-row" id="item-${id}">
+        <div class="item-grid">
+          <div class="full"><label style="display:block;color:var(--muted);font-size:11px;margin-bottom:5px">Nama Barang</label><input class="item-name" placeholder="Contoh: Banner"></div>
+          <div><label style="display:block;color:var(--muted);font-size:11px;margin-bottom:5px">Harga Satuan</label><input class="item-price" type="number" min="0" placeholder="50000" oninput="calculateTotal()"></div>
+          <div><label style="display:block;color:var(--muted);font-size:11px;margin-bottom:5px">Jumlah</label><input class="item-qty" type="number" min="1" value="1" oninput="calculateTotal()"></div>
+        </div>
+        <div class="item-total"><span>Total: <b class="row-total">Rp0</b></span><button class="remove-item" onclick="removeItem(${id})">Hapus</button></div>
+      </div>
+    `);
+    calculateTotal();
+  };
+
+  window.removeItem = function(id) {
+    let e = document.getElementById("item-" + id);
+    if(e) e.remove();
+    calculateTotal();
+  };
+
+  window.calculateTotal = function() {
+    let total = 0, rows = document.querySelectorAll(".item-row");
+    rows.forEach(row => {
+      let price = Number(row.querySelector(".item-price").value) || 0,
+          qty = Number(row.querySelector(".item-qty").value) || 0,
+          t = price * qty;
+      row.querySelector(".row-total").textContent = formatRupiah(t);
+      total += t;
+    });
+    document.getElementById("itemCount").textContent = rows.length;
+    document.getElementById("grandTotal").textContent = formatRupiah(total);
+    calculatePayment();
+  };
+
+  function getGrandTotal() {
+    let total = 0;
+    document.querySelectorAll(".item-row").forEach(row => {
+      total += (Number(row.querySelector(".item-price").value) || 0) * (Number(row.querySelector(".item-qty").value) || 0);
+    });
+    return total;
+  }
+
+  window.calculatePayment = function() {
+    let total = getGrandTotal(),
+        payment = Number(document.getElementById("payment")?.value) || 0,
+        result = document.getElementById("paymentResult");
+    if(!result) return;
+    if(payment === total) result.innerHTML = `<div class="payment-result payment-lunas"><b>🟢 LUNAS</b><br>Pembayaran sesuai dengan total tagihan.</div>`;
+    else if(payment < total) result.innerHTML = `<div class="payment-result payment-kurang"><b>🟠 KEKURANGAN</b><br>Masih kurang: <strong>${formatRupiah(total - payment)}</strong></div>`;
+    else result.innerHTML = `<div class="payment-result payment-kembali"><b>🔵 KEMBALIAN</b><br>Kembalian: <strong>${formatRupiah(payment - total)}</strong></div>`;
+  };
+
+  window.saveSale = async function() {
+    let customer = document.getElementById("customer").value.trim(),
+        phone = document.getElementById("phone").value.trim(),
+        date = document.getElementById("saleDate").value,
+        payment = Number(document.getElementById("payment").value) || 0,
+        dueDate = document.getElementById("dueDate").value,
+        description = document.getElementById("description").value.trim(),
+        rows = document.querySelectorAll(".item-row");
+
+    if(!customer) return alert("Nama pelanggan harus diisi.");
+    let items = [];
+    rows.forEach(row => {
+      let name = row.querySelector(".item-name").value.trim(),
+          price = Number(row.querySelector(".item-price").value) || 0,
+          qty = Number(row.querySelector(".item-qty").value) || 0;
+      if(name && price && qty) items.push({name, price, qty, total: price * qty});
+    });
+    if(!items.length) return alert("Minimal satu barang harus diisi.");
+
+    let total = items.reduce((s, i) => s + i.total, 0),
+        status = payment === total ? "Lunas" : payment < total ? "Kekurangan" : "Kembalian",
+        difference = Math.abs(total - payment);
+
+    try {
+      await push(salesRef, {
+        number: "TRX-" + Date.now().toString().slice(-6),
+        customer, phone, date, items, total, payment, status, difference, dueDate, description,
+        createdAt: new Date().toLocaleString("id-ID"),
+        timestamp: Date.now()
+      });
+      closeModal();
+    } catch (e) {
+      alert("Gagal menyimpan ke Realtime Database: " + e.message);
+    }
+  };
+
+  window.deleteSale = async function(id) {
+    if(!confirm("Hapus transaksi ini dari Cloud?")) return;
+    try {
+      await remove(ref(db, "sales/" + id));
+    } catch(e) {
+      alert("Gagal menghapus: " + e.message);
+    }
+  };
+
+  window.openNoteModal = function() {
+    openModal("Tambah Note", `
+      <div class="form-group"><label>Judul</label><input id="noteTitle" placeholder="Judul catatan"></div>
+      <div class="form-group"><label>Isi</label><textarea id="noteContent" placeholder="Tulis catatan..."></textarea></div>
+      <div class="form-group"><label>Kategori</label><select id="noteCategory"><option>Pekerjaan</option><option>Pelanggan</option><option>Ide</option><option>Lainnya</option></select></div>
+      <button class="submit" onclick="saveNote()">Simpan Note (Cloud)</button>
+    `);
+  };
+
+  window.saveNote = async function() {
+    let title = document.getElementById("noteTitle").value.trim(),
+        content = document.getElementById("noteContent").value.trim(),
+        category = document.getElementById("noteCategory").value;
+    if(!title && !content) return alert("Isi note terlebih dahulu.");
+
+    try {
+      await push(notesRef, {
+        title: title || "Tanpa judul", content, category,
+        date: new Date().toLocaleString("id-ID"),
+        timestamp: Date.now()
+      });
+      closeModal();
+    } catch(e) {
+      alert("Gagal menyimpan catatan: " + e.message);
+    }
+  };
+
+  window.openFileModal = function() {
+    openModal("Tambah File", `
+      <div class="form-group"><label>Nama File</label><input id="fileName" placeholder="contoh.pdf"></div>
+      <div class="form-group"><label>Kategori</label><select id="fileCategory"><option>Desain</option><option>Pelanggan</option><option>Invoice</option><option>Dokumen</option><option>Lainnya</option></select></div>
+      <button class="submit" onclick="saveFile()">Simpan File (Cloud)</button>
+    `);
+  };
+
+  window.saveFile = async function() {
+    let name = document.getElementById("fileName").value.trim(),
+        category = document.getElementById("fileCategory").value;
+    if(!name) return alert("Nama file harus diisi.");
+
+    try {
+      await push(filesRef, {
+        name, category,
+        date: new Date().toLocaleString("id-ID"),
+        timestamp: Date.now()
+      });
+      closeModal();
+    } catch(e) {
+      alert("Gagal menyimpan file: " + e.message);
+    }
+  };
+
+  function renderSales(data = sales) {
+    let list = document.getElementById("salesList");
+    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada transaksi.</div>`; return; }
+    list.innerHTML = data.map(sale => {
+      let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
+      let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
+      let paymentText = sale.status === "Kekurangan" ? `Kurang ${formatRupiah(sale.difference)}` : sale.status === "Kembalian" ? `Kembalian ${formatRupiah(sale.difference)}` : "Pembayaran sesuai";
+      return `<div class="sale-card"><div class="sale-top"><div><div class="sale-customer">${escapeHTML(sale.customer)}</div><div class="sale-number">${sale.number} · ${sale.date}</div></div><div class="sale-total">${formatRupiah(sale.total)}</div></div><div class="sale-info">${summary}</div><span class="status ${cls}">${sale.status}</span><div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · ${paymentText}</div>${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}<div style="margin-top:13px;text-align:right"><button class="delete-btn" onclick="deleteSale('${sale.id}')">Hapus transaksi</button></div></div>`;
+    }).join("");
+  }
+
+  function renderNotes(data = notes) {
+    let list = document.getElementById("notesList");
+    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada catatan.</div>`; return; }
+    list.innerHTML = data.map(note => `<div class="note"><h3>${escapeHTML(note.title)}</h3><p>${escapeHTML(note.content)}</p><div style="color:var(--muted);font-size:11px;margin-top:13px">${escapeHTML(note.category)} · ${note.date}</div></div>`).join("");
+  }
+
+  function renderFiles(data = files) {
+    let list = document.getElementById("filesList");
+    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada file.</div>`; return; }
+    list.innerHTML = data.map(file => `<div class="file"><div class="file-icon">📄</div><div class="file-info"><div class="file-name">${escapeHTML(file.name)}</div><div class="file-meta">${escapeHTML(file.category)} · ${file.date}</div></div></div>`).join("");
+  }
+
+  window.searchSales = function(q) {
+    q = q.toLowerCase();
+    renderSales(sales.filter(s => (s.customer && s.customer.toLowerCase().includes(q)) || (s.items && s.items.some(i => i.name.toLowerCase().includes(q))) || (s.number && s.number.toLowerCase().includes(q))));
+  };
+
+  window.searchNotes = function(q) {
+    q = q.toLowerCase();
+    renderNotes(notes.filter(n => (n.title && n.title.toLowerCase().includes(q)) || (n.content && n.content.toLowerCase().includes(q))));
+  };
+
+  window.searchFiles = function(q) {
+    q = q.toLowerCase();
+    renderFiles(files.filter(f => f.name && f.name.toLowerCase().includes(q)));
+  };
+
+  function renderDashboard() {
+    let total = sales.reduce((s, x) => s + (x.total || 0), 0);
+    document.getElementById("dashboardSales").textContent = formatRupiah(total);
+    document.getElementById("dashboardTransactions").textContent = sales.length;
+    document.getElementById("dashboardNotes").textContent = notes.length;
+    document.getElementById("dashboardFiles").textContent = files.length;
+    document.getElementById("salesTotal").textContent = formatRupiah(total);
+    let recent = document.getElementById("recentSales");
+    if(!sales.length){ recent.innerHTML = `<div class="card"><div class="empty">Belum ada transaksi.</div></div>`; return; }
+    recent.innerHTML = sales.slice(0, 5).map(s => `<div class="sale-card"><div class="sale-top"><div><div class="sale-customer">${escapeHTML(s.customer)}</div><div class="sale-number">${s.number}</div></div><div class="sale-total">${formatRupiah(s.total)}</div></div><span class="status ${s.status==="Lunas"?"lunas":s.status==="Kekurangan"?"kurang":"kembali"}">${s.status}</span></div>`).join("");
+  }
+
+  window.openCurrentModal = function() {
+    if(currentPage === "sales") openSaleModal();
+    else if(currentPage === "notes") openNoteModal();
+    else if(currentPage === "files") openFileModal();
+    else openSaleModal();
+  };
+
+  function formatRupiah(value) { return new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR", maximumFractionDigits: 0}).format(value || 0); }
+  function todayISO() { let d = new Date(), offset = d.getTimezoneOffset(), local = new Date(d.getTime() - offset * 60000); return local.toISOString().split("T")[0]; }
+  function formatDate(value) { return new Date(value + "T00:00:00").toLocaleDateString("id-ID", {day: "numeric", month: "long", year: "numeric"}); }
+  function escapeHTML(value) { return String(value || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+
+  function renderAll() {
+    renderDashboard();
+    renderSales();
+    renderNotes();
+    renderFiles();
+  }
+
+  document.getElementById("today").textContent = new Date().toLocaleDateString("id-ID", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
+</script>
 </body>
 </html>

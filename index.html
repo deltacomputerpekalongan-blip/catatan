@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Penjualan</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1c1c1e;
+      --muted: #8e8e93;
+      --border: #e5e5ea;
+      --primary: #2c6bed;
+      --primary-soft: rgba(44, 107, 237, 0.12);
+      --danger: #ff3b30;
+      --danger-soft: #fff0f0;
+    }
+
+    /* Reset & Base */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #1c1c1e; padding: 20px; display: flex; justify-content: center; }
+
+    /* Modal / Card Container */
+    .modal-container {
+      background: var(--card);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      background: var(--card);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .btn-add {
+      background: var(--primary-soft);
+      color: var(--primary);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-add:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Dynamic Item Row */
+    .item-row {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+
+    .item-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .item-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .item-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .item-field label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .item-field input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .item-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    .item-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .item-subtotal {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .item-subtotal b {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .btn-remove {
+      border: none;
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-remove:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: var(--primary-soft);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .summary-row.total {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1px solid rgba(44, 107, 237, 0.2);
+    }
+
+    .summary-row.total span {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .summary-row.total b {
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    @media(max-width: 400px) {
+      .item-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="modal-container">
+    <div class="form-group">
+      <label>No. HP / Kontak (opsional)</label>
+      <input type="text" placeholder="08xxxxxxxxxx">
+    </div>
+
+    <div class="form-group">
+      <label>Tanggal Transaksi</label>
+      <input type="date" id="tgl-transaksi">
+    </div>
+
+    <!-- Header Section Daftar Barang -->
+    <div class="section-header">
+      <span class="section-title">Daftar Barang</span>
+      <button class="btn-add" onclick="addItem()">+ Barang</button>
+    </div>
+
+    <!-- Container Barang Dinamis -->
+    <div id="items"></div>
+
+    <!-- Summary Box -->
+    <div class="summary-card">
+      <div class="summary-row">
+        <span>Total Barang</span>
+        <b id="total-barang">0</b>
+      </div>
+      <div class="summary-row total">
+        <span>Total Tagihan</span>
+        <b id="total-tagihan">Rp 0</b>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top: 16px;">
+      <label>Jumlah Pembayaran</label>
+      <input type="number" placeholder="0" oninput="calculateTotal()">
+    </div>
+  </div>
+
+  <script>
+    let itemCounter = 0;
+
+    // Set tanggal default ke hari ini
+    document.getElementById('tgl-transaksi').valueAsDate = new Date();
+
+    function addItem() {
+      itemCounter++;
+      let id = itemCounter;
+
+      let itemHtml = `
+        <div class="item-row" id="item-${id}">
+          <div class="item-grid">
+            <div class="item-field full">
+              <label>Nama Barang</label>
+              <input type="text" class="item-name" placeholder="Contoh: Banner 3x1m">
+            </div>
+            <div class="item-field">
+              <label>Harga Satuan</label>
+              <input type="number" class="item-price" placeholder="50000" min="0" oninput="calculateTotal()">
+            </div>
+            <div class="item-field">
+              <label>Jumlah</label>
+              <input type="number" class="item-qty" value="1" min="1" oninput="calculateTotal()">
+            </div>
+          </div>
+          <div class="item-footer">
+            <span class="item-subtotal">Subtotal: <b id="subtotal-${id}">Rp 0</b></span>
+            <button class="btn-remove" onclick="removeItem(${id})">Hapus</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("items").insertAdjacentHTML("beforeend", itemHtml);
+      calculateTotal();
+    }
+
+    function removeItem(id) {
+      let elem = document.getElementById(`item-${id}`);
+      if (elem) {
+        elem.remove();
+        calculateTotal();
+      }
+    }
+
+    function calculateTotal() {
+      let rows = document.querySelectorAll('.item-row');
+      let grandTotal = 0;
+      let totalQtyCount = 0;
+
+      rows.forEach(row => {
+        let price = parseFloat(row.querySelector('.item-price').value) || 0;
+        let qty = parseInt(row.querySelector('.item-qty').value) || 0;
+        let subtotal = price * qty;
+
+        grandTotal += subtotal;
+        totalQtyCount += qty;
+
+        let subtotalElem = row.querySelector('.item-subtotal b');
+        if (subtotalElem) {
+          subtotalElem.innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
+        }
+      });
+
+      document.getElementById('total-barang').innerText = totalQtyCount;
+      document.getElementById('total-tagihan').innerText = 'Rp ' + grandTotal.toLocaleString('id-ID');
+    }
+
+    // Tambah 1 item secara otomatis saat pertama kali dibuka
+    addItem();
+  </script>
+
+</body>
+</html>

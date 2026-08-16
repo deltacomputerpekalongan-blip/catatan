@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Work Notes - One UI Cloud</title>
+<!-- html2canvas untuk fitur Ekspor Struk ke PNG -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{--bg:#f6f6f8;--card:#fff;--text:#17171a;--muted:#777980;--primary:#315efb;--primary-soft:#eaf0ff;--border:#e7e7eb;--success:#198754;--warning:#d98200;--danger:#dc3545;--shadow:0 4px 20px rgba(0,0,0,.05)}
 .dark{--bg:#101114;--card:#1b1c20;--text:#f5f5f5;--muted:#999ba3;--primary:#7895ff;--primary-soft:#252d49;--border:#2b2c31;--success:#53c98a;--warning:#ffb74d;--danger:#ff6b6b;--shadow:0 5px 20px rgba(0,0,0,.25)}
@@ -25,14 +27,29 @@ button,input,textarea,select{font-family:inherit}
 .summary-card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
 .summary-icon{font-size:23px;margin-bottom:12px}.summary-label{font-size:12px;color:var(--muted)}.summary-value{font-size:20px;font-weight:700;margin-top:4px}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.quick button{border:0;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:17px 8px;cursor:pointer}
+.quick button{border:0;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:20px;padding:17px 8px;cursor:pointer;font-size:13px;font-weight:600}
 .quick-icon{display:block;font-size:24px;margin-bottom:6px}
+
 .sale-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
 .sale-top{display:flex;justify-content:space-between;gap:10px}.sale-customer{font-size:17px;font-weight:700}.sale-number{color:var(--muted);font-size:11px;margin-top:3px}.sale-total{font-size:18px;font-weight:700}
-.sale-info{color:var(--muted);font-size:12px;margin-top:12px}
+.sale-info{color:var(--muted);font-size:12px;margin-top:10px}
 .status{display:inline-block;padding:6px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-top:10px}
 .status.lunas{background:#e6f7ed;color:var(--success)}.status.kurang{background:#fff3df;color:var(--warning)}.status.kembali{background:var(--primary-soft);color:var(--primary)}
-.note{background:var(--card);border:1px solid var(--border);border-radius:23px;padding:19px;margin-bottom:12px}.note h3{margin-bottom:7px}.note p{color:var(--muted);font-size:14px;line-height:1.5}
+
+.action-row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;padding-top:10px;border-top:1px dashed var(--border)}
+.btn-sm{border:0;padding:6px 12px;border-radius:12px;font-size:12px;font-weight:600;cursor:pointer;transition:0.2s}
+.btn-update{background:var(--primary-soft);color:var(--primary)}
+.btn-export{background:#e6f7ed;color:var(--success)}
+.btn-delete{background:rgba(220,53,69,0.1);color:var(--danger)}
+
+.note{background:var(--card);border:1px solid var(--border);border-radius:23px;padding:19px;margin-bottom:12px;transition:all 0.2s}
+.note.completed{opacity:0.6}
+.note-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.note-checkbox{width:20px;height:20px;accent-color:var(--primary);cursor:pointer;margin-top:2px}
+.note-title{font-size:16px;font-weight:700;flex:1}
+.note.completed .note-title{text-decoration:line-through;color:var(--muted)}
+.note p{color:var(--muted);font-size:14px;line-height:1.5;margin-left:32px}
+
 .file{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:10px}.file-icon{width:48px;height:48px;border-radius:15px;background:var(--primary-soft);display:flex;justify-content:center;align-items:center;font-size:23px}.file-info{flex:1}.file-name{font-weight:700}.file-meta{color:var(--muted);font-size:11px;margin-top:4px}
 .empty{text-align:center;color:var(--muted);padding:35px 10px}
 .fab{position:fixed;right:22px;bottom:92px;width:58px;height:58px;border:0;border-radius:19px;background:var(--primary);color:#fff;font-size:30px;box-shadow:0 8px 25px rgba(49,94,251,.3);cursor:pointer;z-index:20}
@@ -44,7 +61,6 @@ button,input,textarea,select{font-family:inherit}
 .form-group{margin-bottom:14px}.form-group label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.form-group input,.form-group textarea,.form-group select{width:100%;border:1px solid var(--border);border-radius:15px;background:var(--bg);color:var(--text);padding:13px;outline:none;transition:all 0.2s ease}.form-group textarea{min-height:100px;resize:vertical}
 .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
 
-/* Styling Baru & Dinamis untuk Daftar Barang */
 .items-header{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px}.items-title{font-weight:700;font-size:16px}.add-item{border:0;background:var(--primary-soft);color:var(--primary);border-radius:20px;padding:8px 16px;cursor:pointer;font-weight:600;font-size:13px;transition:0.2s}.add-item:hover{background:var(--primary);color:#fff}
 .item-row{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:12px;transition:all 0.2s ease}
 .item-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px}
@@ -60,7 +76,23 @@ button,input,textarea,select{font-family:inherit}
 
 .total-box{background:var(--primary-soft);border-radius:20px;padding:17px;margin:18px 0}.total-line{display:flex;justify-content:space-between;margin-bottom:8px}.total-line:last-child{margin-bottom:0}.grand-total{font-size:20px;font-weight:700;padding-top:9px;border-top:1px solid rgba(0,0,0,.08)}
 .payment-result{border-radius:18px;padding:15px;margin:12px 0;font-size:14px}.payment-lunas{background:#e6f7ed;color:var(--success)}.payment-kurang{background:#fff3df;color:var(--warning)}.payment-kembali{background:var(--primary-soft);color:var(--primary)}
-.submit{width:100%;border:0;border-radius:17px;padding:15px;background:var(--primary);color:white;font-weight:700;cursor:pointer;font-size:15px}.delete-btn{border:0;background:transparent;color:var(--danger);cursor:pointer;font-size:13px}
+.submit{width:100%;border:0;border-radius:17px;padding:15px;background:var(--primary);color:white;font-weight:700;cursor:pointer;font-size:15px}
+
+/* Styling Struk Penjualan Untuk Ekspor PNG */
+#receipt-container{display:none}
+.receipt-wrapper{width:320px;background:#fff;color:#000;padding:20px;font-family:'Courier New',Courier,monospace;box-shadow:0 0 10px rgba(0,0,0,0.1)}
+.receipt-header{text-align:center;border-bottom:1px dashed #000;padding-bottom:12px;margin-bottom:12px}
+.receipt-header h3{font-size:18px;font-weight:bold;margin-bottom:3px;text-transform:uppercase}
+.receipt-header p{font-size:11px}
+.receipt-info{font-size:11px;margin-bottom:10px;border-bottom:1px dashed #000;padding-bottom:8px}
+.receipt-table{width:100%;font-size:11px;border-collapse:collapse;margin-bottom:10px}
+.receipt-table th,.receipt-table td{text-align:left;padding:3px 0}
+.receipt-table .num{text-align:right}
+.receipt-divider{border-top:1px dashed #000;margin:8px 0}
+.receipt-summary{font-size:11px;margin-top:6px}
+.receipt-summary-line{display:flex;justify-content:space-between;margin-bottom:4px}
+.receipt-footer{text-align:center;margin-top:15px;padding-top:10px;border-top:1px dashed #000;font-size:11px}
+
 @media(max-width:480px){.item-grid{grid-template-columns:1fr 1fr}}
 @media(min-width:700px){.summary{grid-template-columns:repeat(4,1fr)}.overlay{align-items:center}.modal{border-radius:30px}}
 </style>
@@ -84,6 +116,15 @@ button,input,textarea,select{font-family:inherit}
 <button onclick="openNoteModal()"><span class="quick-icon">📝</span>Note</button>
 <button onclick="openFileModal()"><span class="quick-icon">📁</span>File</button>
 </div>
+
+<!-- FITUR BARU: BACKUP & RESTORE DATA -->
+<div class="section-title">Backup & Restore</div>
+<div class="quick" style="grid-template-columns: repeat(2, 1fr);">
+<button onclick="exportAllData()"><span class="quick-icon">📤</span>Ekspor Data (JSON)</button>
+<button onclick="triggerImport()"><span class="quick-icon">📥</span>Impor Data (JSON)</button>
+</div>
+<input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importAllData(event)">
+
 <div class="section-title">Transaksi terbaru</div><div id="recentSales"></div>
 </section>
 
@@ -115,6 +156,8 @@ button,input,textarea,select{font-family:inherit}
 
 <div class="overlay" id="overlay"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Tambah</h2><button class="close" onclick="closeModal()">✕</button></div><div id="modalContent"></div></div></div>
 
+<div id="receipt-container"></div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { 
@@ -122,6 +165,8 @@ button,input,textarea,select{font-family:inherit}
     ref, 
     push, 
     remove, 
+    update,
+    set,
     onValue 
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
@@ -192,6 +237,257 @@ button,input,textarea,select{font-family:inherit}
     document.getElementById("overlay").classList.remove("show");
   };
 
+  // --- FITUR EKSPOR & IMPOR ALL DATA (JSON) ---
+  window.exportAllData = function() {
+    let backupData = {
+      sales: sales,
+      notes: notes,
+      files: files,
+      exportedAt: new Date().toISOString()
+    };
+
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    let downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `Backup_WorkNotes_${todayISO()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
+  window.triggerImport = function() {
+    document.getElementById("importFileInput").click();
+  };
+
+  window.importAllData = function(event) {
+    let file = event.target.files[0];
+    if(!file) return;
+
+    let reader = new FileReader();
+    reader.onload = async function(e) {
+      try {
+        let imported = JSON.parse(e.target.result);
+        if(!confirm("Proses ini akan mengunggah data dari file ke Cloud. Lanjutkan?")) return;
+
+        if(imported.sales && Array.isArray(imported.sales)) {
+          for(let item of imported.sales) {
+            let id = item.id;
+            let data = {...item};
+            delete data.id;
+            await set(ref(db, "sales/" + (id || Date.now())), data);
+          }
+        }
+
+        if(imported.notes && Array.isArray(imported.notes)) {
+          for(let item of imported.notes) {
+            let id = item.id;
+            let data = {...item};
+            delete data.id;
+            await set(ref(db, "notes/" + (id || Date.now())), data);
+          }
+        }
+
+        if(imported.files && Array.isArray(imported.files)) {
+          for(let item of imported.files) {
+            let id = item.id;
+            let data = {...item};
+            delete data.id;
+            await set(ref(db, "files/" + (id || Date.now())), data);
+          }
+        }
+
+        alert("Berhasil mengimpor data ke Cloud!");
+      } catch(err) {
+        alert("Gagal membaca file backup: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = "";
+  };
+
+  // --- NOTE CHECKLIST & ACTIONS ---
+  window.openNoteModal = function(id = null) {
+    let note = id ? notes.find(n => n.id === id) : null;
+    let isEdit = !!note;
+
+    openModal(isEdit ? "Edit Note" : "Tambah Note", `
+      <div class="form-group"><label>Judul Catatan</label><input id="noteTitle" value="${note ? escapeHTML(note.title) : ''}" placeholder="Judul catatan"></div>
+      <div class="form-group"><label>Isi Catatan</label><textarea id="noteContent" placeholder="Tulis catatan...">${note ? escapeHTML(note.content) : ''}</textarea></div>
+      <div class="form-group"><label>Kategori</label>
+        <select id="noteCategory">
+          <option ${note && note.category === 'Pekerjaan' ? 'selected' : ''}>Pekerjaan</option>
+          <option ${note && note.category === 'Pelanggan' ? 'selected' : ''}>Pelanggan</option>
+          <option ${note && note.category === 'Ide' ? 'selected' : ''}>Ide</option>
+          <option ${note && note.category === 'Lainnya' ? 'selected' : ''}>Lainnya</option>
+        </select>
+      </div>
+      <button class="submit" onclick="saveNote('${id || ''}')">${isEdit ? 'Perbarui Note' : 'Simpan Note (Cloud)'}</button>
+    `);
+  };
+
+  window.saveNote = async function(id = '') {
+    let title = document.getElementById("noteTitle").value.trim(),
+        content = document.getElementById("noteContent").value.trim(),
+        category = document.getElementById("noteCategory").value;
+    if(!title && !content) return alert("Isi note terlebih dahulu.");
+
+    try {
+      if(id) {
+        await update(ref(db, "notes/" + id), { title: title || "Tanpa judul", content, category });
+      } else {
+        await push(notesRef, {
+          title: title || "Tanpa judul", content, category, completed: false,
+          date: new Date().toLocaleString("id-ID"), timestamp: Date.now()
+        });
+      }
+      closeModal();
+    } catch(e) {
+      alert("Gagal menyimpan catatan: " + e.message);
+    }
+  };
+
+  window.toggleNoteStatus = async function(id, currentStatus) {
+    try {
+      await update(ref(db, "notes/" + id), { completed: !currentStatus });
+    } catch(e) {
+      alert("Gagal mengubah status catatan: " + e.message);
+    }
+  };
+
+  window.deleteNote = async function(id) {
+    if(!confirm("Hapus catatan ini?")) return;
+    try {
+      await remove(ref(db, "notes/" + id));
+    } catch(e) {
+      alert("Gagal menghapus: " + e.message);
+    }
+  };
+
+  function renderNotes(data = notes) {
+    let list = document.getElementById("notesList");
+    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada catatan.</div>`; return; }
+    list.innerHTML = data.map(note => `
+      <div class="note ${note.completed ? 'completed' : ''}">
+        <div class="note-header">
+          <input type="checkbox" class="note-checkbox" ${note.completed ? 'checked' : ''} onclick="toggleNoteStatus('${note.id}', ${!!note.completed})">
+          <div class="note-title">${escapeHTML(note.title)}</div>
+        </div>
+        <p>${escapeHTML(note.content)}</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;margin-left:32px">
+          <div style="color:var(--muted);font-size:11px">${escapeHTML(note.category)} · ${note.date}</div>
+          <div>
+            <button class="btn-sm btn-update" onclick="openNoteModal('${note.id}')">Edit</button>
+            <button class="btn-sm btn-delete" onclick="deleteNote('${note.id}')">Hapus</button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // --- PEMBAYARAN PENJUALAN & EKSPOR STRUK PNG ---
+  window.openUpdatePaymentModal = function(id) {
+    let sale = sales.find(s => s.id === id);
+    if(!sale) return;
+
+    openModal("Update Pembayaran", `
+      <div style="margin-bottom:15px;background:var(--bg);padding:14px;border-radius:15px">
+        <div style="font-weight:700;font-size:15px">${escapeHTML(sale.customer)} (${sale.number})</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:4px">Total Tagihan: <b>${formatRupiah(sale.total)}</b></div>
+      </div>
+      <div class="form-group">
+        <label>Jumlah Pembayaran Baru (Rp)</label>
+        <input id="newPayment" type="number" min="0" value="${sale.payment}" placeholder="0" oninput="calculateNewPayment(${sale.total})">
+      </div>
+      <div id="paymentResultUpdate"></div>
+      <button class="submit" onclick="savePaymentUpdate('${sale.id}', ${sale.total})" style="margin-top:10px">Perbarui Pembayaran</button>
+    `);
+    calculateNewPayment(sale.total);
+  };
+
+  window.calculateNewPayment = function(total) {
+    let payment = Number(document.getElementById("newPayment")?.value) || 0,
+        result = document.getElementById("paymentResultUpdate");
+    if(!result) return;
+    if(payment === total) result.innerHTML = `<div class="payment-result payment-lunas"><b>🟢 LUNAS</b><br>Pembayaran sesuai total tagihan.</div>`;
+    else if(payment < total) result.innerHTML = `<div class="payment-result payment-kurang"><b>🟠 KEKURANGAN</b><br>Kurang: <strong>${formatRupiah(total - payment)}</strong></div>`;
+    else result.innerHTML = `<div class="payment-result payment-kembali"><b>🔵 KEMBALIAN</b><br>Kembali: <strong>${formatRupiah(payment - total)}</strong></div>`;
+  };
+
+  window.savePaymentUpdate = async function(id, total) {
+    let payment = Number(document.getElementById("newPayment").value) || 0;
+    let status = payment === total ? "Lunas" : payment < total ? "Kekurangan" : "Kembalian";
+    let difference = Math.abs(total - payment);
+
+    try {
+      await update(ref(db, "sales/" + id), { payment, status, difference });
+      closeModal();
+    } catch(e) {
+      alert("Gagal memperbarui pembayaran: " + e.message);
+    }
+  };
+
+  window.exportReceiptPNG = function(id) {
+    let sale = sales.find(s => s.id === id);
+    if(!sale) return;
+
+    let container = document.getElementById("receipt-container");
+    container.style.display = "block";
+
+    let itemsHtml = (sale.items || []).map(item => `
+      <tr>
+        <td colspan="3">${escapeHTML(item.name)}</td>
+      </tr>
+      <tr>
+        <td style="color:#555">${item.qty} x ${formatRupiah(item.price)}</td>
+        <td></td>
+        <td class="num">${formatRupiah(item.total)}</td>
+      </tr>
+    `).join("");
+
+    let paymentText = sale.status === "Kekurangan" ? "Sisa Tagihan" : "Kembalian";
+
+    container.innerHTML = `
+      <div class="receipt-wrapper" id="receipt-card">
+        <div class="receipt-header">
+          <h3>WORK NOTES STORE</h3>
+          <p>Nota Transaksi Penjualan</p>
+        </div>
+        <div class="receipt-info">
+          <div>No.   : <b>${sale.number}</b></div>
+          <div>Tgl   : ${sale.date}</div>
+          <div>Nama  : ${escapeHTML(sale.customer)}</div>
+          ${sale.phone ? `<div>HP    : ${escapeHTML(sale.phone)}</div>` : ''}
+        </div>
+        <table class="receipt-table">
+          ${itemsHtml}
+        </table>
+        <div class="receipt-divider"></div>
+        <div class="receipt-summary">
+          <div class="receipt-summary-line"><span>TOTAL</span> <b>${formatRupiah(sale.total)}</b></div>
+          <div class="receipt-summary-line"><span>DIBAYAR</span> <span>${formatRupiah(sale.payment)}</span></div>
+          <div class="receipt-summary-line"><span>${paymentText}</span> <span>${formatRupiah(sale.difference)}</span></div>
+          <div class="receipt-summary-line"><span>STATUS</span> <b>${sale.status.toUpperCase()}</b></div>
+        </div>
+        <div class="receipt-footer">
+          <p>Terima kasih atas kunjungan Anda!</p>
+          <small>${sale.createdAt || ''}</small>
+        </div>
+      </div>
+    `;
+
+    html2canvas(document.getElementById("receipt-card")).then(canvas => {
+      let link = document.createElement('a');
+      link.download = `Struk_${sale.number}_${sale.customer}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      container.style.display = "none";
+    }).catch(err => {
+      alert("Gagal mengekspor struk: " + err.message);
+      container.style.display = "none";
+    });
+  };
+
+  // --- FORM TRANSAKSI ---
   window.openSaleModal = function() {
     itemCounter = 0;
     openModal("Tambah Penjualan", `
@@ -320,33 +616,6 @@ button,input,textarea,select{font-family:inherit}
     }
   };
 
-  window.openNoteModal = function() {
-    openModal("Tambah Note", `
-      <div class="form-group"><label>Judul</label><input id="noteTitle" placeholder="Judul catatan"></div>
-      <div class="form-group"><label>Isi</label><textarea id="noteContent" placeholder="Tulis catatan..."></textarea></div>
-      <div class="form-group"><label>Kategori</label><select id="noteCategory"><option>Pekerjaan</option><option>Pelanggan</option><option>Ide</option><option>Lainnya</option></select></div>
-      <button class="submit" onclick="saveNote()">Simpan Note (Cloud)</button>
-    `);
-  };
-
-  window.saveNote = async function() {
-    let title = document.getElementById("noteTitle").value.trim(),
-        content = document.getElementById("noteContent").value.trim(),
-        category = document.getElementById("noteCategory").value;
-    if(!title && !content) return alert("Isi note terlebih dahulu.");
-
-    try {
-      await push(notesRef, {
-        title: title || "Tanpa judul", content, category,
-        date: new Date().toLocaleString("id-ID"),
-        timestamp: Date.now()
-      });
-      closeModal();
-    } catch(e) {
-      alert("Gagal menyimpan catatan: " + e.message);
-    }
-  };
-
   window.openFileModal = function() {
     openModal("Tambah File", `
       <div class="form-group"><label>Nama File</label><input id="fileName" placeholder="contoh.pdf"></div>
@@ -379,14 +648,28 @@ button,input,textarea,select{font-family:inherit}
       let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
       let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
       let paymentText = sale.status === "Kekurangan" ? `Kurang ${formatRupiah(sale.difference)}` : sale.status === "Kembalian" ? `Kembalian ${formatRupiah(sale.difference)}` : "Pembayaran sesuai";
-      return `<div class="sale-card"><div class="sale-top"><div><div class="sale-customer">${escapeHTML(sale.customer)}</div><div class="sale-number">${sale.number} · ${sale.date}</div></div><div class="sale-total">${formatRupiah(sale.total)}</div></div><div class="sale-info">${summary}</div><span class="status ${cls}">${sale.status}</span><div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · ${paymentText}</div>${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}<div style="margin-top:13px;text-align:right"><button class="delete-btn" onclick="deleteSale('${sale.id}')">Hapus transaksi</button></div></div>`;
+      return `
+        <div class="sale-card">
+          <div class="sale-top">
+            <div>
+              <div class="sale-customer">${escapeHTML(sale.customer)}</div>
+              <div class="sale-number">${sale.number} · ${sale.date}</div>
+            </div>
+            <div class="sale-total">${formatRupiah(sale.total)}</div>
+          </div>
+          <div class="sale-info">${summary}</div>
+          <span class="status ${cls}">${sale.status}</span>
+          <div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · ${paymentText}</div>
+          ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
+          ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
+          <div class="action-row">
+            <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')">💳 Update Bayar</button>
+            <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
+            <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
+          </div>
+        </div>
+      `;
     }).join("");
-  }
-
-  function renderNotes(data = notes) {
-    let list = document.getElementById("notesList");
-    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada catatan.</div>`; return; }
-    list.innerHTML = data.map(note => `<div class="note"><h3>${escapeHTML(note.title)}</h3><p>${escapeHTML(note.content)}</p><div style="color:var(--muted);font-size:11px;margin-top:13px">${escapeHTML(note.category)} · ${note.date}</div></div>`).join("");
   }
 
   function renderFiles(data = files) {

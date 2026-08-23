@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f8f9ff" id="themeColorMeta">
 <title>Work Notes - One UI Cloud</title>
-
+a
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 /* =========================================================
@@ -79,7 +80,6 @@ body {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
-  /* Area aman System Bars Android (Status Bar & Gesture Navigation Bar) */
   padding-top: max(16px, env(safe-area-inset-top));
   padding-bottom: calc(96px + env(safe-area-inset-bottom));
   padding-left: env(safe-area-inset-left);
@@ -88,6 +88,15 @@ body {
 }
 
 button, input, textarea, select { font-family: inherit; border: none; outline: none; }
+
+/* SVG Icon Helper */
+.icon-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: middle;
+}
 
 /* Top App Bar */
 .header {
@@ -144,7 +153,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   padding: 16px; box-shadow: var(--md-elevation-1);
   border: 1px solid var(--md-sys-color-outline-variant);
 }
-.summary-icon { font-size: 22px; margin-bottom: 8px; }
+.summary-icon { font-size: 22px; margin-bottom: 8px; display: flex; align-items: center; height: 28px; }
 .summary-label { font-size: 12px; color: var(--md-sys-color-on-surface-variant); font-weight: 500; }
 .summary-value { font-size: 18px; font-weight: 700; margin-top: 4px; color: var(--md-sys-color-on-surface); }
 
@@ -157,9 +166,10 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   border-radius: var(--md-shape-corner-medium);
   padding: 16px 8px; cursor: pointer; font-size: 13px; font-weight: 600;
   box-shadow: var(--md-elevation-1); transition: 0.2s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 .quick button:active { background: var(--md-sys-color-primary-container); }
-.quick-icon { display: block; font-size: 22px; margin-bottom: 6px; }
+.quick-icon { display: flex; justify-content: center; align-items: center; font-size: 22px; margin-bottom: 6px; height: 28px; }
 
 /* Penjualan Item Card */
 .sale-card {
@@ -218,77 +228,51 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .file-meta { color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 2px; }
 .empty { text-align: center; color: var(--md-sys-color-on-surface-variant); padding: 35px 10px; font-size: 14px; }
 
-/* =========================================================
-   MATERIAL DESIGN 3 FLOATING ACTION BUTTON (FAB)
-   ========================================================= */
+/* FAB & Bottom Nav */
 .fab {
-  position: fixed;
-  right: 20px;
-  bottom: calc(84px + env(safe-area-inset-bottom));
-  width: 56px; height: 56px;
-  border-radius: var(--md-shape-corner-medium);
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  font-size: 28px; font-weight: 400;
-  box-shadow: var(--md-elevation-3);
-  cursor: pointer; z-index: 20;
-  display: flex; align-items: center; justify-content: center;
-  transition: transform 0.2s, background-color 0.2s;
+  position: fixed; right: 20px; bottom: calc(84px + env(safe-area-inset-bottom));
+  width: 56px; height: 56px; border-radius: var(--md-shape-corner-medium);
+  background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);
+  font-size: 28px; font-weight: 400; box-shadow: var(--md-elevation-3); cursor: pointer; z-index: 20;
+  display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background-color 0.2s;
 }
 .fab:active { transform: scale(0.92); }
 
-/* =========================================================
-   MATERIAL DESIGN 3 NAVIGATION BAR (BOTTOM NAV)
-   ========================================================= */
 .bottom-nav {
   position: fixed; left: 0; right: 0; bottom: 0;
-  height: calc(72px + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: var(--md-sys-color-surface);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
-  z-index: 10;
+  height: calc(72px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  background: var(--md-sys-color-surface); border-top: 1px solid var(--md-sys-color-outline-variant); z-index: 10;
 }
 .nav-inner { max-width: 650px; height: 100%; margin: auto; display: flex; align-items: center; }
 .nav {
-  flex: 1; border: 0; background: transparent;
-  color: var(--md-sys-color-on-surface-variant);
-  cursor: pointer; font-size: 12px; font-weight: 500;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px;
+  flex: 1; border: 0; background: transparent; color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer; font-size: 12px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
 }
 .nav-icon-wrapper {
   width: 56px; height: 28px; border-radius: var(--md-shape-corner-full);
-  display: flex; align-items: center; justify-content: center;
-  transition: background-color 0.2s ease-in-out;
+  display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease-in-out;
 }
-.nav-icon { font-size: 18px; }
+.nav-icon { font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .nav.active { color: var(--md-sys-color-on-surface); font-weight: 700; }
 .nav.active .nav-icon-wrapper {
   background-color: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
 }
 
-/* =========================================================
-   MODALS & FORM STYLES
-   ========================================================= */
+/* MODALS & FORMS */
 .overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-  display: none; align-items: flex-end; justify-content: center; z-index: 100;
-  backdrop-filter: blur(2px);
+  display: none; align-items: flex-end; justify-content: center; z-index: 100; backdrop-filter: blur(2px);
 }
 .overlay.show { display: flex; }
 .modal {
   width: 100%; max-width: 650px; max-height: 88vh; overflow-y: auto;
   background: var(--md-sys-color-surface-container);
   border-radius: var(--md-shape-corner-large) var(--md-shape-corner-large) 0 0;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-  box-shadow: var(--md-elevation-3);
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); box-shadow: var(--md-elevation-3);
   animation: slideUp 0.25s cubic-bezier(0, 0, 0.2, 1);
 }
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
-}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .modal-head h2 { font-size: 20px; font-weight: 700; }
 .close {
@@ -300,41 +284,21 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; color: var(--md-sys-color-on-surface-variant); font-size: 12px; font-weight: 500; margin-bottom: 6px; }
 .form-group input, .form-group textarea, .form-group select {
-  width: 100%; border: 1px solid var(--md-sys-color-outline);
-  border-radius: var(--md-shape-corner-small);
-  background: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-surface);
-  padding: 12px 14px; font-size: 14px; transition: border-color 0.2s;
+  width: 100%; border: 1px solid var(--md-sys-color-outline); border-radius: var(--md-shape-corner-small);
+  background: var(--md-sys-color-background); color: var(--md-sys-color-on-surface); padding: 12px 14px; font-size: 14px; transition: border-color 0.2s;
 }
 .form-group textarea { min-height: 90px; resize: vertical; }
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-  border-color: var(--md-sys-color-primary); border-width: 2px;
-}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--md-sys-color-primary); border-width: 2px; }
 
 .items-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px; }
 .items-title { font-weight: 700; font-size: 15px; }
-.add-item {
-  border: 0; background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  border-radius: var(--md-shape-corner-full);
-  padding: 6px 14px; cursor: pointer; font-weight: 600; font-size: 12px;
-}
-.item-row {
-  background: var(--md-sys-color-background);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-shape-corner-medium);
-  padding: 14px; margin-bottom: 10px;
-}
+.add-item { border: 0; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); border-radius: var(--md-shape-corner-full); padding: 6px 14px; cursor: pointer; font-weight: 600; font-size: 12px; }
+.item-row { background: var(--md-sys-color-background); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-shape-corner-medium); padding: 14px; margin-bottom: 10px; }
 .item-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; }
 .item-grid .full { grid-column: 1/-1; }
 .item-field { display: flex; flex-direction: column; }
 .item-field label { font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 4px; }
-.item-field input {
-  width: 100%; border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-shape-corner-small);
-  background: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface); padding: 8px 10px; font-size: 13px;
-}
+.item-field input { width: 100%; border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-shape-corner-small); background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); padding: 8px 10px; font-size: 13px; }
 .item-total { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--md-sys-color-outline-variant); font-size: 12px; }
 .item-total b { color: var(--md-sys-color-primary); font-size: 13px; }
 .remove-item { border: 0; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); border-radius: var(--md-shape-corner-small); padding: 4px 10px; cursor: pointer; font-size: 11px; font-weight: 600; }
@@ -346,12 +310,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .payment-lunas { background: var(--md-sys-color-success-container); color: var(--md-sys-color-success); }
 .payment-kurang { background: var(--md-sys-color-warning-container); color: var(--md-sys-color-warning); }
 .payment-kembali { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
-.submit {
-  width: 100%; border: 0; border-radius: var(--md-shape-corner-full);
-  padding: 14px; background: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary); font-weight: 700; cursor: pointer; font-size: 15px;
-  box-shadow: var(--md-elevation-1); margin-top: 8px;
-}
+.submit { width: 100%; border: 0; border-radius: var(--md-shape-corner-full); padding: 14px; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); font-weight: 700; cursor: pointer; font-size: 15px; box-shadow: var(--md-elevation-1); margin-top: 8px; }
 
 /* Receipt Export PNG Styling */
 #receipt-container { display: none; }
@@ -371,13 +330,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 @media(max-width:480px){ .item-grid { grid-template-columns: 1fr 1fr; } }
 @media(min-width:700px){ .summary { grid-template-columns: repeat(4, 1fr); } .overlay { align-items: center; } .modal { border-radius: var(--md-shape-corner-large); } }
 
-/* ===== FITUR PELANGGAN, PEKERJAAN & PIUTANG ===== */
-.customer-card,.job-card,.debt-card{
-  background:var(--md-sys-color-surface-container);
-  border:1px solid var(--md-sys-color-outline-variant);
-  border-radius:var(--md-shape-corner-medium);
-  padding:16px;margin-bottom:10px;box-shadow:var(--md-elevation-1)
-}
+.customer-card,.job-card,.debt-card{ background:var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline-variant); border-radius:var(--md-shape-corner-medium); padding:16px;margin-bottom:10px;box-shadow:var(--md-elevation-1) }
 .customer-top,.job-top,.debt-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .customer-name,.job-title,.debt-name{font-size:15px;font-weight:700}
 .customer-meta,.job-meta,.debt-meta{font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:5px}
@@ -395,9 +348,147 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .filter-row button.active{background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);font-weight:700}
 @media(max-width:480px){.stat-mini{grid-template-columns:1fr 1fr}.bottom-nav .nav{font-size:10px}.nav-icon{font-size:16px}}
 
+/* =========================================================
+   DESAIN STANDAR STANDEE QRIS (DELTA COMPUTER - PRINTING)
+   ========================================================= */
+.qris-standee {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px 20px;
+  color: #000000;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border: 1px solid #e0e0e0;
+  max-width: 380px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.qris-standee::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18%;
+  width: 0;
+  height: 0;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+  border-left: 36px solid #e52320;
+}
+
+.qris-header-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.qris-brand {
+  text-align: left;
+}
+
+.qris-logo-text {
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -1px;
+  color: #000;
+  line-height: 1;
+}
+
+.qris-sub-text {
+  font-size: 9px;
+  font-weight: 700;
+  color: #333;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.gpn-logo {
+  font-weight: 900;
+  font-size: 20px;
+  color: #d32f2f;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qris-merchant-info {
+  margin: 16px 0 12px;
+}
+
+.qris-merchant-name {
+  font-weight: 800;
+  font-size: 16px;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qris-nmid {
+  font-size: 12px;
+  color: #444;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.qris-code-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  margin-top: 2px;
+}
+
+.qris-box {
+  background: #ffffff;
+  padding: 12px;
+  display: inline-block;
+  margin: 8px auto 12px;
+}
+
+#qrisImageContainer img {
+  margin: 0 auto;
+  display: block;
+}
+
+.qris-slogan {
+  font-weight: 800;
+  font-size: 13px;
+  color: #222;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.qris-website {
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.qris-footer-meta {
+  border-top: 1px dashed #ccc;
+  padding-top: 10px;
+  font-size: 10px;
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+}
 </style>
 </head>
 <body>
+
+<!-- TEMPLATE SVG DEBT COLLECTION ROUND ICON -->
+<svg style="display: none;">
+  <symbol id="icon-debt-collection-round" viewBox="0 0 24 24">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zM3.5 12a8.5 8.5 0 1117 0 8.5 8.5 0 01-17 0zm11.75-3.25a.75.75 0 000-1.5h-2.5V6a.75.75 0 00-1.5 0v1.25h-.5a2.75 2.75 0 000 5.5h2.5a1.25 1.25 0 110 2.5h-3.5a.75.75 0 000 1.5h2.5V18a.75.75 0 001.5 0v-1.25h.5a2.75 2.75 0 000-5.5h-2.5a1.25 1.25 0 110-2.5h3.5z"/>
+  </symbol>
+  <symbol id="icon-qris" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v2h-3v-2zm-3 0h2v3h-2v-3zm3 3h3v5h-2v-3h-1v-2zm-3 2h2v3h-2v-3zm-2-2h2v2h-2v-2zm0 3h2v2h-2v-2z"/>
+  </symbol>
+</svg>
 
 <header class="header">
   <div class="header-top">
@@ -424,7 +515,13 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       <div class="summary-card"><div class="summary-icon">📁</div><div class="summary-label">Files</div><div class="summary-value" id="dashboardFiles">0</div></div>
       <div class="summary-card"><div class="summary-icon">👥</div><div class="summary-label">Pelanggan</div><div class="summary-value" id="dashboardCustomers">0</div></div>
       <div class="summary-card"><div class="summary-icon">📋</div><div class="summary-label">Pekerjaan Aktif</div><div class="summary-value" id="dashboardJobs">0</div></div>
-      <div class="summary-card"><div class="summary-icon">💳</div><div class="summary-label">Piutang</div><div class="summary-value" id="dashboardDebt">Rp0</div></div>
+      <div class="summary-card">
+        <div class="summary-icon">
+          <svg class="icon-svg"><use href="#icon-debt-collection-round"/></svg>
+        </div>
+        <div class="summary-label">Piutang</div>
+        <div class="summary-value" id="dashboardDebt">Rp0</div>
+      </div>
     </div>
 
     <div class="section-title">Akses cepat</div>
@@ -434,7 +531,18 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       <button onclick="openFileModal()"><span class="quick-icon">📁</span>File</button>
       <button onclick="openCustomerModal()"><span class="quick-icon">👤</span>Pelanggan</button>
       <button onclick="openJobModal()"><span class="quick-icon">📋</span>Pekerjaan</button>
-      <button onclick="showPage('debts',document.querySelectorAll('.nav')[6])"><span class="quick-icon">💳</span>Piutang</button>
+      <button onclick="showPage('debts',document.querySelectorAll('.nav')[6])">
+        <span class="quick-icon">
+          <svg class="icon-svg"><use href="#icon-debt-collection-round"/></svg>
+        </span>
+        Piutang
+      </button>
+      <button onclick="openQrisModal()">
+        <span class="quick-icon">
+          <svg class="icon-svg"><use href="#icon-qris"/></svg>
+        </span>
+        QRIS
+      </button>
     </div>
 
     <div class="section-title">Backup & Restore</div>
@@ -522,7 +630,11 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       <span>Pekerjaan</span>
     </button>
     <button class="nav" onclick="showPage('debts',this)">
-      <div class="nav-icon-wrapper"><span class="nav-icon">₿</span></div>
+      <div class="nav-icon-wrapper">
+        <span class="nav-icon">
+          <svg class="icon-svg"><use href="#icon-debt-collection-round"/></svg>
+        </span>
+      </div>
       <span>Piutang</span>
     </button>
   </div>
@@ -639,6 +751,43 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 
   window.closeModal = function() {
     document.getElementById("overlay").classList.remove("show");
+  };
+
+  // --- MODAL TEMPLATE QRIS STANDEE ---
+ window.openQrisModal = function() {
+    openModal("QRIS Pembayaran", `
+      <div class="qris-standee">
+        <div class="qris-header-logos">
+          <div class="qris-brand">
+            <div class="qris-logo-text">QRIS</div>
+            <div class="qris-sub-text">QR Code Standar Pembayaran Nasional</div>
+          </div>
+          <div class="gpn-logo">
+            <span>🦅 GPN</span>
+          </div>
+        </div>
+
+        <div class="qris-merchant-info">
+          <div class="qris-merchant-name">DELTA COMPUTER - PRINTING</div>
+          <div class="qris-nmid">NMID : ID1025443497389</div>
+          <div class="qris-code-tag">A01</div>
+        </div>
+
+       <div class="qris-box">
+       <img src="https://raw.githubusercontent.com/deltacomputerpekalongan-blip/catatan/main/QRIS.jpg" alt="QRIS Code" style="width:210px;height:210px;display:block;margin:0 auto;">
+       </div>
+
+        <div class="qris-slogan">SATU QRIS UNTUK SEMUA</div>
+        <div class="qris-website">Cek aplikasi penyelenggara di: www.aspi-qris.id</div>
+
+        <div class="qris-footer-meta">
+          <span>Dicetak oleh: 93600014</span>
+          <span>Versi Cetak: 2025.10.10</span>
+        </div>
+      </div>
+    `);
+
+   
   };
 
   // --- EKSPOR & IMPOR DATA (JSON) ---
@@ -808,7 +957,6 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     `).join("");
   }
 
-
   // ===== PELANGGAN =====
   window.openCustomerModal = function(id = null) {
     const c = id ? customers.find(x => x.id === id) : null;
@@ -959,14 +1107,14 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     list.innerHTML = debtSales.map(s=>`
       <div class="debt-card">
         <div class="debt-top">
-          <div><div class="debt-name">💳 ${escapeHTML(s.customer)}</div>
+          <div><div class="debt-name"><svg class="icon-svg"><use href="#icon-debt-collection-round"/></svg> ${escapeHTML(s.customer)}</div>
           <div class="debt-meta">${s.number} · ${s.date}</div>
           ${s.phone?`<div class="debt-meta">📱 ${escapeHTML(s.phone)}</div>`:''}
           ${s.dueDate?`<div class="debt-meta">📅 Jatuh tempo: <b>${formatDate(s.dueDate)}</b></div>`:''}</div>
           <div style="text-align:right"><div style="font-weight:700;color:var(--md-sys-color-warning)">${formatRupiah(s.difference)}</div><div class="debt-meta">sisa</div></div>
         </div>
         <div class="action-row">
-          <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${s.id}')">💳 Bayar</button>
+          <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${s.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Bayar</button>
           <button class="btn-sm btn-export" onclick="exportReceiptPNG('${s.id}')">🖼️ Struk</button>
         </div>
       </div>`).join("");
@@ -1195,7 +1343,6 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
         timestamp: Date.now()
       });
 
-      // Otomatis membuat / memperbarui data pelanggan.
       const existingCustomer = customers.find(c => c.name === customer || (phone && c.phone === phone));
       if(existingCustomer) {
         await update(ref(db, "customers/" + existingCustomer.id), {name:customer, phone, updatedAt:Date.now()});
@@ -1203,7 +1350,6 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
         await push(customersRef, {name:customer, phone, address:"", createdAt:Date.now(), updatedAt:Date.now()});
       }
 
-      // Jika dipilih, transaksi juga dibuat sebagai pekerjaan.
       if(jobStatus) {
         const jobName = items.map(i => `${i.name} (${i.qty}x)`).join(", ");
         await push(jobsRef, {
@@ -1275,7 +1421,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
           ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
           ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
           <div class="action-row">
-            <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')">💳 Update Bayar</button>
+            <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Update Bayar</button>
             <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
             <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
           </div>
@@ -1346,6 +1492,35 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   }
 
   document.getElementById("today").textContent = new Date().toLocaleDateString("id-ID", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
+
+// ==========================================
+// FUNGSI KALKULASI KASIR
+// ==========================================
+
+function hitungTotal(subtotal, piutang) {
+    // Tanpa Math.abs dan tanpa pembatasan 0 agar hasil BISA MINUS
+    return subtotal - piutang;
+}
+
+// ==========================================
+// EVENT / PROSES TRANSAKSI
+// ==========================================
+
+function prosesTransaksi() {
+    let subtotalInput = parseFloat(document.getElementById('input-subtotal').value) || 0;
+    let piutangInput = parseFloat(document.getElementById('input-piutang').value) || 0;
+
+    let grandTotal = hitungTotal(subtotalInput, piutangInput);
+
+    // Gunakan formatRupiah yang sudah Anda buat sebelumnya di kode Anda
+    document.getElementById('display-total').innerText = formatRupiah(grandTotal);
+}
+// HAPUS BARIS INI:
+let qrisURL = "https://api.qrserver.com/...";
+let qrisImg = document.querySelector("img[alt*='QRIS']") || document.querySelector("#qris-img");
+if (qrisImg) {
+    qrisImg.src = qrisURL;
+}
 </script>
 </body>
 </html>

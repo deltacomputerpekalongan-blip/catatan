@@ -98,6 +98,18 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   vertical-align: middle;
 }
 
+.sale-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.sale-deficit {
+  font-size: 13px;
+  color: var(--md-sys-color-warning);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
 /* Top App Bar */
 .header {
   max-width: 900px;
@@ -1163,65 +1175,72 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   };
 
   window.exportReceiptPNG = function(id) {
-    let sale = sales.find(s => s.id === id);
-    if(!sale) return;
+  let sale = sales.find(s => s.id === id);
+  if(!sale) return;
 
-    let container = document.getElementById("receipt-container");
-    container.style.display = "block";
+  let container = document.getElementById("receipt-container");
+  container.style.display = "block";
 
-    let itemsHtml = (sale.items || []).map(item => `
-      <tr>
-        <td colspan="3">${escapeHTML(item.name)}</td>
-      </tr>
-      <tr>
-        <td style="color:#555">${item.qty} x ${formatRupiah(item.price)}</td>
-        <td></td>
-        <td class="num">${formatRupiah(item.total)}</td>
-      </tr>
-    `).join("");
+  let itemsHtml = (sale.items || []).map(item => `
+    <tr>
+      <td colspan="3" style="font-weight:600">${escapeHTML(item.name)}</td>
+    </tr>
+    <tr>
+      <td style="color:#555;font-size:10px">${item.qty} x ${formatRupiah(item.price)}</td>
+      <td></td>
+      <td class="num" style="font-weight:600">${formatRupiah(item.total)}</td>
+    </tr>
+  `).join("");
 
-    let paymentText = sale.status === "Kekurangan" ? "Sisa Tagihan" : "Kembalian";
+  let paymentText = sale.status === "Kekurangan" ? "Sisa Tagihan" : "Kembalian";
 
-    container.innerHTML = `
-      <div class="receipt-wrapper" id="receipt-card">
-        <div class="receipt-header">
-          <h3>WORK NOTES STORE</h3>
-          <p>Nota Transaksi Penjualan</p>
-        </div>
-        <div class="receipt-info">
-          <div>No.   : <b>${sale.number}</b></div>
-          <div>Tgl   : ${sale.date}</div>
-          <div>Nama  : ${escapeHTML(sale.customer)}</div>
-          ${sale.phone ? `<div>HP    : ${escapeHTML(sale.phone)}</div>` : ''}
-        </div>
-        <table class="receipt-table">
-          ${itemsHtml}
-        </table>
-        <div class="receipt-divider"></div>
-        <div class="receipt-summary">
-          <div class="receipt-summary-line"><span>TOTAL</span> <b>${formatRupiah(sale.total)}</b></div>
-          <div class="receipt-summary-line"><span>DIBAYAR</span> <span>${formatRupiah(sale.payment)}</span></div>
-          <div class="receipt-summary-line"><span>${paymentText}</span> <span>${formatRupiah(sale.difference)}</span></div>
-          <div class="receipt-summary-line"><span>STATUS</span> <b>${sale.status.toUpperCase()}</b></div>
-        </div>
-        <div class="receipt-footer">
-          <p>Terima kasih atas kunjungan Anda!</p>
-          <small>${sale.createdAt || ''}</small>
-        </div>
+  container.innerHTML = `
+    <div class="receipt-wrapper" id="receipt-card">
+      <div class="receipt-header">
+        <h3>WORK NOTES STORE</h3>
+        <p>Nota Transaksi Penjualan</p>
       </div>
-    `;
+      <div class="receipt-info">
+        <div>No.   : <b>${sale.number}</b></div>
+        <div>Tgl   : ${sale.date}</div>
+        <div>Nama  : ${escapeHTML(sale.customer)}</div>
+        ${sale.phone ? `<div>HP    : ${escapeHTML(sale.phone)}</div>` : ''}
+      </div>
+      <table class="receipt-table">
+        ${itemsHtml}
+      </table>
+      <div class="receipt-divider"></div>
+      <div class="receipt-summary">
+        <div class="receipt-summary-line"><span>TOTAL</span> <b>${formatRupiah(sale.total)}</b></div>
+        <div class="receipt-summary-line"><span>DIBAYAR</span> <span>${formatRupiah(sale.payment)}</span></div>
+        <div class="receipt-summary-line"><span>${paymentText}</span> <span>${formatRupiah(sale.difference)}</span></div>
+        <div class="receipt-summary-line"><span>STATUS</span> <b>${sale.status.toUpperCase()}</b></div>
+      </div>
+      <div class="receipt-footer">
+        <p>Terima kasih atas kunjungan Anda!</p>
+        <small>${sale.createdAt || ''}</small>
+      </div>
+    </div>
+  `;
 
-    html2canvas(document.getElementById("receipt-card")).then(canvas => {
-      let link = document.createElement('a');
-      link.download = `Struk_${sale.number}_${sale.customer}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      container.style.display = "none";
-    }).catch(err => {
-      alert("Gagal mengekspor struk: " + err.message);
-      container.style.display = "none";
-    });
-  };
+  // Render dengan scale 3x untuk kualitas HD
+  html2canvas(document.getElementById("receipt-card"), {
+    scale: 3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: "#ffffff",
+    logging: false
+  }).then(canvas => {
+    let link = document.createElement('a');
+    link.download = `Struk_${sale.number}_${sale.customer}.png`;
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.click();
+    container.style.display = "none";
+  }).catch(err => {
+    alert("Gagal mengekspor struk: " + err.message);
+    container.style.display = "none";
+  });
+};
 
   // --- FORM TRANSAKSI ---
   window.openSaleModal = function() {
@@ -1399,36 +1418,54 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     }
   };
 
-  function renderSales(data = sales) {
-    let list = document.getElementById("salesList");
-    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada transaksi.</div>`; return; }
-    list.innerHTML = data.map(sale => {
-      let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
-      let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
-      let paymentText = sale.status === "Kekurangan" ? `Kurang ${formatRupiah(sale.difference)}` : sale.status === "Kembalian" ? `Kembalian ${formatRupiah(sale.difference)}` : "Pembayaran sesuai";
-      return `
-        <div class="sale-card">
-          <div class="sale-top">
-            <div>
-              <div class="sale-customer">${escapeHTML(sale.customer)}</div>
-              <div class="sale-number">${sale.number} · ${sale.date}</div>
-            </div>
-            <div class="sale-total">${formatRupiah(sale.total)}</div>
-          </div>
-          <div class="sale-info">${summary}</div>
-          <span class="status ${cls}">${sale.status}</span>
-          <div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · ${paymentText}</div>
-          ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
-          ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
-          <div class="action-row">
-            <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Update Bayar</button>
-            <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
-            <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
-          </div>
-        </div>
+function renderSales(data = sales) {
+  let list = document.getElementById("salesList");
+  if(!data.length){ list.innerHTML = `<div class="empty">Belum ada transaksi.</div>`; return; }
+  list.innerHTML = data.map(sale => {
+    let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
+    let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
+    
+    // Tampilan harga total dengan sisa kekurangan jika ada
+    let priceDisplay = `
+      <div class="sale-price-container">
+        <div class="sale-total">${formatRupiah(sale.total)}</div>
+        ${sale.status === "Kekurangan" ? `<div class="sale-deficit">⚠️ Kekurangan: ${formatRupiah(sale.difference)}</div>` : ''}
+      </div>
+    `;
+    
+    let paymentInfo = '';
+    if(sale.status === "Kekurangan") {
+      paymentInfo = `
+        <div class="sale-info">Total Tagihan: <b>${formatRupiah(sale.total)}</b></div>
+        <div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b></div>
       `;
-    }).join("");
-  }
+    } else if(sale.status === "Kembalian") {
+      paymentInfo = `<div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · Kembalian ${formatRupiah(sale.difference)}</div>`;
+    }
+    
+    return `
+      <div class="sale-card">
+        <div class="sale-top">
+          <div>
+            <div class="sale-customer">${escapeHTML(sale.customer)}</div>
+            <div class="sale-number">${sale.number} · ${sale.date}</div>
+          </div>
+          ${priceDisplay}
+        </div>
+        <div class="sale-info">${summary}</div>
+        <span class="status ${cls}">${sale.status}</span>
+        ${paymentInfo}
+        ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
+        ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
+        <div class="action-row">
+          <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Update Bayar</button>
+          <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
+          <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
 
   function renderFiles(data = files) {
     let list = document.getElementById("filesList");

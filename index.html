@@ -147,6 +147,20 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .search span { font-size: 18px; color: var(--md-sys-color-on-surface-variant); }
 .search input { width: 100%; background: transparent; color: var(--md-sys-color-on-surface); font-size: 15px; }
 
+/* Date Filter Box */
+.date-filter-box {
+  display: flex; gap: 10px; margin-bottom: 16px; align-items: center;
+  background: var(--md-sys-color-surface-container);
+  padding: 12px 16px; border-radius: var(--md-shape-corner-medium);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+.date-filter-box input {
+  background: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-surface);
+  padding: 6px 10px; border-radius: var(--md-shape-corner-small);
+  border: 1px solid var(--md-sys-color-outline-variant); font-size: 12px;
+}
+
 /* Material Cards */
 .card {
   background: var(--md-sys-color-surface-container);
@@ -201,11 +215,12 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .status.kurang { background: var(--md-sys-color-warning-container); color: var(--md-sys-color-warning); }
 .status.kembali { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); }
 
-.action-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--md-sys-color-outline-variant); }
-.btn-sm { border: 0; padding: 8px 14px; border-radius: var(--md-shape-corner-small); font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.action-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--md-sys-color-outline-variant); flex-wrap: wrap; }
+.btn-sm { border: 0; padding: 8px 14px; border-radius: var(--md-shape-corner-small); font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
 .btn-update { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
 .btn-export { background: var(--md-sys-color-success-container); color: var(--md-sys-color-success); }
 .btn-delete { background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); }
+.btn-wa { background: #25D366; color: #ffffff; }
 
 /* Note Card */
 .note {
@@ -254,13 +269,13 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   height: calc(72px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
   background: var(--md-sys-color-surface); border-top: 1px solid var(--md-sys-color-outline-variant); z-index: 10;
 }
-.nav-inner { max-width: 650px; height: 100%; margin: auto; display: flex; align-items: center; }
+.nav-inner { max-width: 750px; height: 100%; margin: auto; display: flex; align-items: center; }
 .nav {
   flex: 1; border: 0; background: transparent; color: var(--md-sys-color-on-surface-variant);
-  cursor: pointer; font-size: 12px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  cursor: pointer; font-size: 11px; font-weight: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
 }
 .nav-icon-wrapper {
-  width: 56px; height: 28px; border-radius: var(--md-shape-corner-full);
+  width: 48px; height: 28px; border-radius: var(--md-shape-corner-full);
   display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease-in-out;
 }
 .nav-icon { font-size: 18px; display: flex; align-items: center; justify-content: center; }
@@ -309,7 +324,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .item-grid .full { grid-column: 1/-1; }
 .item-field { display: flex; flex-direction: column; }
 .item-field label { font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 4px; }
-.item-field input { width: 100%; border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-shape-corner-small); background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); padding: 8px 10px; font-size: 13px; }
+.item-field input, .item-field select { width: 100%; border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-shape-corner-small); background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); padding: 8px 10px; font-size: 13px; }
 .item-total { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--md-sys-color-outline-variant); font-size: 12px; }
 .item-total b { color: var(--md-sys-color-primary); font-size: 13px; }
 .remove-item { border: 0; background: var(--md-sys-color-error-container); color: var(--md-sys-color-error); border-radius: var(--md-shape-corner-small); padding: 4px 10px; cursor: pointer; font-size: 11px; font-weight: 600; }
@@ -341,10 +356,10 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 @media(max-width:480px){ .item-grid { grid-template-columns: 1fr 1fr; } }
 @media(min-width:700px){ .summary { grid-template-columns: repeat(4, 1fr); } .overlay { align-items: center; } .modal { border-radius: var(--md-shape-corner-large); } }
 
-.customer-card,.job-card,.debt-card{ background:var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline-variant); border-radius:var(--md-shape-corner-medium); padding:16px;margin-bottom:10px;box-shadow:var(--md-elevation-1) }
-.customer-top,.job-top,.debt-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.customer-name,.job-title,.debt-name{font-size:15px;font-weight:700}
-.customer-meta,.job-meta,.debt-meta{font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:5px}
+.customer-card,.job-card,.debt-card,.product-card{ background:var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline-variant); border-radius:var(--md-shape-corner-medium); padding:16px;margin-bottom:10px;box-shadow:var(--md-elevation-1) }
+.customer-top,.job-top,.debt-top,.product-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.customer-name,.job-title,.debt-name,.product-name{font-size:15px;font-weight:700}
+.customer-meta,.job-meta,.debt-meta,.product-meta{font-size:12px;color:var(--md-sys-color-on-surface-variant);margin-top:5px}
 .job-status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;margin-top:9px}
 .job-menunggu{background:var(--md-sys-color-warning-container);color:var(--md-sys-color-warning)}
 .job-diproses{background:var(--md-sys-color-primary-container);color:var(--md-sys-color-primary)}
@@ -357,136 +372,8 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 .filter-row{display:flex;gap:8px;overflow:auto;margin-bottom:12px}
 .filter-row button{white-space:nowrap;border:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container);color:var(--md-sys-color-on-surface);padding:8px 12px;border-radius:999px;font-size:12px;cursor:pointer}
 .filter-row button.active{background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);font-weight:700}
-@media(max-width:480px){.stat-mini{grid-template-columns:1fr 1fr}.bottom-nav .nav{font-size:10px}.nav-icon{font-size:16px}}
+@media(max-width:480px){.stat-mini{grid-template-columns:1fr 1fr}.bottom-nav .nav{font-size:9px}.nav-icon{font-size:15px}}
 
-/* =========================================================
-   DESAIN STANDAR STANDEE QRIS (DELTA COMPUTER - PRINTING)
-   ========================================================= */
-.qris-standee {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px 20px;
-  color: #000000;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  border: 1px solid #e0e0e0;
-  max-width: 380px;
-  margin: 0 auto;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.qris-standee::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 18%;
-  width: 0;
-  height: 0;
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-left: 36px solid #e52320;
-}
-
-.qris-header-logos {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.qris-brand {
-  text-align: left;
-}
-
-.qris-logo-text {
-  font-weight: 900;
-  font-size: 24px;
-  letter-spacing: -1px;
-  color: #000;
-  line-height: 1;
-}
-
-.qris-sub-text {
-  font-size: 9px;
-  font-weight: 700;
-  color: #333;
-  margin-top: 2px;
-  text-transform: uppercase;
-}
-
-.gpn-logo {
-  font-weight: 900;
-  font-size: 20px;
-  color: #d32f2f;
-  font-style: italic;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.qris-merchant-info {
-  margin: 16px 0 12px;
-}
-
-.qris-merchant-name {
-  font-weight: 800;
-  font-size: 16px;
-  color: #111;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.qris-nmid {
-  font-size: 12px;
-  color: #444;
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-.qris-code-tag {
-  font-size: 12px;
-  font-weight: 700;
-  color: #333;
-  margin-top: 2px;
-}
-
-.qris-box {
-  background: #ffffff;
-  padding: 12px;
-  display: inline-block;
-  margin: 8px auto 12px;
-}
-
-#qrisImageContainer img {
-  margin: 0 auto;
-  display: block;
-}
-
-.qris-slogan {
-  font-weight: 800;
-  font-size: 13px;
-  color: #222;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-
-.qris-website {
-  font-size: 11px;
-  color: #555;
-  margin-bottom: 16px;
-}
-
-.qris-footer-meta {
-  border-top: 1px dashed #ccc;
-  padding-top: 10px;
-  font-size: 10px;
-  color: #666;
-  display: flex;
-  justify-content: space-between;
-}
 </style>
 </head>
 <body>
@@ -533,6 +420,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
         <div class="summary-label">Piutang</div>
         <div class="summary-value" id="dashboardDebt">Rp0</div>
       </div>
+      <div class="summary-card"><div class="summary-icon">📦</div><div class="summary-label">Produk</div><div class="summary-value" id="dashboardProducts">0</div></div>
     </div>
 
     <div class="section-title">Akses cepat</div>
@@ -542,6 +430,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       <button onclick="openFileModal()"><span class="quick-icon">📁</span>File</button>
       <button onclick="openCustomerModal()"><span class="quick-icon">👤</span>Pelanggan</button>
       <button onclick="openJobModal()"><span class="quick-icon">📋</span>Pekerjaan</button>
+      <button onclick="openProductModal()"><span class="quick-icon">📦</span>Produk</button>
       <button onclick="showPage('debts',document.querySelectorAll('.nav')[6])">
         <span class="quick-icon">
           <svg class="icon-svg"><use href="#icon-debt-collection-round"/></svg>
@@ -569,6 +458,16 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 
   <section id="sales" class="page">
     <div class="search"><span>⌕</span><input placeholder="Cari pelanggan atau barang..." oninput="searchSales(this.value)"></div>
+    
+    <!-- FITUR: FILTER RENTANG TANGGAL -->
+    <div class="date-filter-box">
+      <label style="font-size:12px;font-weight:600">Periode:</label>
+      <input type="date" id="filterStartDate" onchange="applySalesDateFilter()">
+      <span style="font-size:12px">s/d</span>
+      <input type="date" id="filterEndDate" onchange="applySalesDateFilter()">
+      <button class="btn-sm btn-update" onclick="resetSalesDateFilter()">Reset</button>
+    </div>
+
     <div class="card">
       <div class="greeting">Total nilai penjualan</div>
       <div id="salesTotal" style="font-size: 28px; font-weight: 700; margin-top: 4px; color: var(--md-sys-color-primary);">Rp0</div>
@@ -610,6 +509,12 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     </div>
     <div id="debtsList"></div>
   </section>
+
+  <!-- FITUR: HALAMAN KATALOG PRODUK -->
+  <section id="products" class="page">
+    <div class="search"><span>⌕</span><input placeholder="Cari produk / barang..." oninput="searchProducts(this.value)"></div>
+    <div id="productsList"></div>
+  </section>
 </main>
 
 <button class="fab" onclick="openCurrentModal()" title="Tambah Baru">+</button>
@@ -639,6 +544,10 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     <button class="nav" onclick="showPage('jobs',this)">
       <div class="nav-icon-wrapper"><span class="nav-icon">☷</span></div>
       <span>Pekerjaan</span>
+    </button>
+    <button class="nav" onclick="showPage('products',this)">
+      <div class="nav-icon-wrapper"><span class="nav-icon">📦</span></div>
+      <span>Produk</span>
     </button>
     <button class="nav" onclick="showPage('debts',this)">
       <div class="nav-icon-wrapper">
@@ -694,12 +603,14 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   const filesRef = ref(db, "files");
   const customersRef = ref(db, "customers");
   const jobsRef = ref(db, "jobs");
+  const productsRef = ref(db, "products");
 
   let sales = [];
   let notes = [];
   let files = [];
   let customers = [];
   let jobs = [];
+  let products = [];
   let currentPage = "home", itemCounter = 0, currentJobFilter = "Semua";
 
   onValue(salesRef, (snapshot) => {
@@ -732,13 +643,19 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     renderAll();
   });
 
+  onValue(productsRef, (snapshot) => {
+    const data = snapshot.val();
+    products = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })).reverse() : [];
+    renderAll();
+  });
+
   window.showPage = function(page, button) {
     currentPage = page;
     document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
     document.getElementById(page).classList.add("active");
     document.querySelectorAll(".nav").forEach(x => x.classList.remove("active"));
     button.classList.add("active");
-    document.getElementById("pageTitle").textContent = {home:"Beranda", sales:"Penjualan", notes:"Note", files:"Files", customers:"Pelanggan", jobs:"Pekerjaan", debts:"Piutang"}[page];
+    document.getElementById("pageTitle").textContent = {home:"Beranda", sales:"Penjualan", notes:"Note", files:"Files", customers:"Pelanggan", jobs:"Pekerjaan", products:"Produk", debts:"Piutang"}[page];
     renderAll();
   };
 
@@ -764,41 +681,34 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     document.getElementById("overlay").classList.remove("show");
   };
 
-  // --- MODAL TEMPLATE QRIS STANDEE ---
- window.openQrisModal = function() {
+  window.openQrisModal = function() {
     openModal("QRIS Pembayaran", `
-      <div class="qris-standee">
-      <div class="qris-header-logos">
-  <div class="qris-brand">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/QRIS_logo.svg/330px-QRIS_logo.svg.png" alt="QRIS Logo" style="height:30px;width:auto;margin-bottom:4px;">
-    <div class="qris-sub-text">QR Code Standar Pembayaran Nasional</div>
-  </div>
-  <div class="gpn-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Gerbang_Pembayaran_Nasional_logo.svg" alt="GPN Logo" style="height:40px;width:auto;">
-  </div>
-</div>
-
-        <div class="qris-merchant-info">
-          <div class="qris-merchant-name">DELTA COMPUTER - PRINTING</div>
-          <div class="qris-nmid">NMID : ID1025443497389</div>
-          <div class="qris-code-tag">A01</div>
-        </div>
-
-       <div class="qris-box">
-       <img src="https://raw.githubusercontent.com/deltacomputerpekalongan-blip/catatan/main/QRIS.jpg" alt="QRIS Code" style="width:210px;height:210px;display:block;margin:0 auto;">
-       </div>
-
-        <div class="qris-slogan">SATU QRIS UNTUK SEMUA</div>
-        <div class="qris-website">Cek aplikasi penyelenggara di: www.aspi-qris.id</div>
-
-        <div class="qris-footer-meta">
-          <span>Dicetak oleh: 93600014</span>
-          <span>Versi Cetak: 2025.10.10</span>
-        </div>
+      <div style="text-align: center; padding: 20px;">
+        <img src="https://github.com/deltacomputerpekalongan-blip/catatan/raw/136f79d97759baa9100652b8fe3e33343862f10c/QRIS%20MINIMAL.png" 
+             alt="QRIS Code" 
+             style="max-width: 50%; height: auto; display: block; margin: 0 auto; border-radius: 10px;">
       </div>
     `);
+  };
 
-   
+  // --- FITUR INTEGRASI WHATSAPP DIRECT ---
+  window.sendWhatsApp = function(phone, type, id) {
+    if(!phone) return alert("Nomor HP tidak tersedia.");
+    let cleanPhone = phone.replace(/[^0-9]/g, '');
+    if(cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+    
+    let text = "";
+    if(type === 'sale') {
+      let sale = sales.find(s => s.id === id);
+      if(!sale) return;
+      text = `Halo kak *${sale.customer}*,\n\nBerikut nota transaksi Anda di *WORK NOTES STORE*:\nNo: *${sale.number}*\nTotal: *${formatRupiah(sale.total)}*\nStatus: *${sale.status.toUpperCase()}*${sale.status === 'Kekurangan' ? `\nSisa Piutang: *${formatRupiah(sale.difference)}*` : ''}\n\nTerima kasih!`;
+    } else if(type === 'debt') {
+      let sale = sales.find(s => s.id === id);
+      if(!sale) return;
+      text = `Halo kak *${sale.customer}*,\n\nPengingat pembayaran piutang transaksi *${sale.number}*.\nSisa Tagihan: *${formatRupiah(sale.difference)}*${sale.dueDate ? `\nJatuh Tempo: *${formatDate(sale.dueDate)}*` : ''}\n\nMohon untuk segera ditindaklanjuti. Terima kasih!`;
+    }
+    
+    window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   // --- EKSPOR & IMPOR DATA (JSON) ---
@@ -809,6 +719,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       files: files,
       customers: customers,
       jobs: jobs,
+      products: products,
       exportedAt: new Date().toISOString()
     };
 
@@ -838,45 +749,43 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
         if(imported.sales && Array.isArray(imported.sales)) {
           for(let item of imported.sales) {
             let id = item.id;
-            let data = {...item};
-            delete data.id;
+            let data = {...item}; delete data.id;
             await set(ref(db, "sales/" + (id || Date.now())), data);
           }
         }
-
         if(imported.notes && Array.isArray(imported.notes)) {
           for(let item of imported.notes) {
             let id = item.id;
-            let data = {...item};
-            delete data.id;
+            let data = {...item}; delete data.id;
             await set(ref(db, "notes/" + (id || Date.now())), data);
           }
         }
-
         if(imported.files && Array.isArray(imported.files)) {
           for(let item of imported.files) {
             let id = item.id;
-            let data = {...item};
-            delete data.id;
+            let data = {...item}; delete data.id;
             await set(ref(db, "files/" + (id || Date.now())), data);
           }
         }
-
         if(imported.customers && Array.isArray(imported.customers)) {
           for(let item of imported.customers) {
             let id = item.id;
-            let data = {...item};
-            delete data.id;
+            let data = {...item}; delete data.id;
             await set(ref(db, "customers/" + (id || Date.now())), data);
           }
         }
-
         if(imported.jobs && Array.isArray(imported.jobs)) {
           for(let item of imported.jobs) {
             let id = item.id;
-            let data = {...item};
-            delete data.id;
+            let data = {...item}; delete data.id;
             await set(ref(db, "jobs/" + (id || Date.now())), data);
+          }
+        }
+        if(imported.products && Array.isArray(imported.products)) {
+          for(let item of imported.products) {
+            let id = item.id;
+            let data = {...item}; delete data.id;
+            await set(ref(db, "products/" + (id || Date.now())), data);
           }
         }
 
@@ -888,6 +797,62 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     reader.readAsText(file);
     event.target.value = "";
   };
+
+  // ===== FITUR: KATALOG PRODUK =====
+  window.openProductModal = function(id = null) {
+    const p = id ? products.find(x => x.id === id) : null;
+    openModal(p ? "Edit Produk" : "Tambah Produk", `
+      <div class="form-group"><label>Nama Barang / Layanan</label><input id="prodName" value="${p ? escapeHTML(p.name) : ''}" placeholder="Contoh: Cetak Banner 3x1"></div>
+      <div class="form-group"><label>Harga Satuan (Rp)</label><input id="prodPrice" type="number" min="0" value="${p ? p.price : 0}"></div>
+      <div class="form-group"><label>Kategori</label><input id="prodCategory" value="${p ? escapeHTML(p.category || '') : ''}" placeholder="Contoh: Cetakan / Desain"></div>
+      <button class="submit" onclick="saveProduct('${id || ''}')">${p ? 'Perbarui Produk' : 'Simpan Produk'}</button>
+    `);
+  };
+
+  window.saveProduct = async function(id = '') {
+    const name = document.getElementById("prodName").value.trim();
+    const price = Number(document.getElementById("prodPrice").value) || 0;
+    const category = document.getElementById("prodCategory").value.trim();
+    if(!name) return alert("Nama produk harus diisi.");
+
+    try {
+      const data = { name, price, category, updatedAt: Date.now() };
+      if(id) await update(ref(db, "products/" + id), data);
+      else await push(productsRef, { ...data, createdAt: Date.now() });
+      closeModal();
+    } catch(e) { alert("Gagal menyimpan produk: " + e.message); }
+  };
+
+  window.deleteProduct = async function(id) {
+    if(!confirm("Hapus produk ini dari katalog?")) return;
+    try { await remove(ref(db, "products/" + id)); }
+    catch(e) { alert("Gagal menghapus produk: " + e.message); }
+  };
+
+  window.searchProducts = function(q) {
+    q = q.toLowerCase();
+    renderProducts(products.filter(p => (p.name || '').toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q)));
+  };
+
+  function renderProducts(data = products) {
+    const list = document.getElementById("productsList");
+    if(!data.length){ list.innerHTML = '<div class="empty">Belum ada katalog produk.</div>'; return; }
+    list.innerHTML = data.map(p => `
+      <div class="product-card">
+        <div class="product-top">
+          <div>
+            <div class="product-name">📦 ${escapeHTML(p.name)}</div>
+            <div class="product-meta">${p.category ? escapeHTML(p.category) : 'Tanpa Kategori'}</div>
+          </div>
+          <b style="color:var(--md-sys-color-primary);font-size:16px">${formatRupiah(p.price)}</b>
+        </div>
+        <div class="action-row">
+          <button class="btn-sm btn-update" onclick="openProductModal('${p.id}')">Edit</button>
+          <button class="btn-sm btn-delete" onclick="deleteProduct('${p.id}')">Hapus</button>
+        </div>
+      </div>
+    `).join("");
+  }
 
   // --- NOTE CHECKLIST & ACTIONS ---
   window.openNoteModal = function(id = null) {
@@ -1125,6 +1090,7 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
           <div style="text-align:right"><div style="font-weight:700;color:var(--md-sys-color-warning)">${formatRupiah(s.difference)}</div><div class="debt-meta">sisa</div></div>
         </div>
         <div class="action-row">
+          ${s.phone ? `<button class="btn-sm btn-wa" onclick="sendWhatsApp('${s.phone}','debt','${s.id}')">📲 WA Tagih</button>` : ''}
           <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${s.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Bayar</button>
           <button class="btn-sm btn-export" onclick="exportReceiptPNG('${s.id}')">🖼️ Struk</button>
         </div>
@@ -1174,74 +1140,73 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
   };
 
   window.exportReceiptPNG = function(id) {
-  let sale = sales.find(s => s.id === id);
-  if(!sale) return;
+    let sale = sales.find(s => s.id === id);
+    if(!sale) return;
 
-  let container = document.getElementById("receipt-container");
-  container.style.display = "block";
+    let container = document.getElementById("receipt-container");
+    container.style.display = "block";
 
-  let itemsHtml = (sale.items || []).map(item => `
-    <tr>
-      <td colspan="3" style="font-weight:600">${escapeHTML(item.name)}</td>
-    </tr>
-    <tr>
-      <td style="color:#555;font-size:10px">${item.qty} x ${formatRupiah(item.price)}</td>
-      <td></td>
-      <td class="num" style="font-weight:600">${formatRupiah(item.total)}</td>
-    </tr>
-  `).join("");
+    let itemsHtml = (sale.items || []).map(item => `
+      <tr>
+        <td colspan="3" style="font-weight:600">${escapeHTML(item.name)}</td>
+      </tr>
+      <tr>
+        <td style="color:#555;font-size:10px">${item.qty} x ${formatRupiah(item.price)}</td>
+        <td></td>
+        <td class="num" style="font-weight:600">${formatRupiah(item.total)}</td>
+      </tr>
+    `).join("");
 
-  let paymentText = sale.status === "Kekurangan" ? "Sisa Tagihan" : "Kembalian";
+    let paymentText = sale.status === "Kekurangan" ? "Sisa Tagihan" : "Kembalian";
 
-  container.innerHTML = `
-    <div class="receipt-wrapper" id="receipt-card">
-      <div class="receipt-header">
-        <h3>WORK NOTES STORE</h3>
-        <p>Nota Transaksi Penjualan</p>
+    container.innerHTML = `
+      <div class="receipt-wrapper" id="receipt-card">
+        <div class="receipt-header">
+          <h3>WORK NOTES STORE</h3>
+          <p>Nota Transaksi Penjualan</p>
+        </div>
+        <div class="receipt-info">
+          <div>No.   : <b>${sale.number}</b></div>
+          <div>Tgl   : ${sale.date}</div>
+          <div>Nama  : ${escapeHTML(sale.customer)}</div>
+          ${sale.phone ? `<div>HP    : ${escapeHTML(sale.phone)}</div>` : ''}
+        </div>
+        <table class="receipt-table">
+          ${itemsHtml}
+        </table>
+        <div class="receipt-divider"></div>
+        <div class="receipt-summary">
+          <div class="receipt-summary-line"><span>TOTAL</span> <b>${formatRupiah(sale.total)}</b></div>
+          <div class="receipt-summary-line"><span>DIBAYAR</span> <span>${formatRupiah(sale.payment)}</span></div>
+          <div class="receipt-summary-line"><span>${paymentText}</span> <span>${formatRupiah(sale.difference)}</span></div>
+          <div class="receipt-summary-line"><span>STATUS</span> <b>${sale.status.toUpperCase()}</b></div>
+        </div>
+        <div class="receipt-footer">
+          <p>Terima kasih atas kunjungan Anda!</p>
+          <small>${sale.createdAt || ''}</small>
+        </div>
       </div>
-      <div class="receipt-info">
-        <div>No.   : <b>${sale.number}</b></div>
-        <div>Tgl   : ${sale.date}</div>
-        <div>Nama  : ${escapeHTML(sale.customer)}</div>
-        ${sale.phone ? `<div>HP    : ${escapeHTML(sale.phone)}</div>` : ''}
-      </div>
-      <table class="receipt-table">
-        ${itemsHtml}
-      </table>
-      <div class="receipt-divider"></div>
-      <div class="receipt-summary">
-        <div class="receipt-summary-line"><span>TOTAL</span> <b>${formatRupiah(sale.total)}</b></div>
-        <div class="receipt-summary-line"><span>DIBAYAR</span> <span>${formatRupiah(sale.payment)}</span></div>
-        <div class="receipt-summary-line"><span>${paymentText}</span> <span>${formatRupiah(sale.difference)}</span></div>
-        <div class="receipt-summary-line"><span>STATUS</span> <b>${sale.status.toUpperCase()}</b></div>
-      </div>
-      <div class="receipt-footer">
-        <p>Terima kasih atas kunjungan Anda!</p>
-        <small>${sale.createdAt || ''}</small>
-      </div>
-    </div>
-  `;
+    `;
 
-  // Render dengan scale 3x untuk kualitas HD
-  html2canvas(document.getElementById("receipt-card"), {
-    scale: 3,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: "#ffffff",
-    logging: false
-  }).then(canvas => {
-    let link = document.createElement('a');
-    link.download = `Struk_${sale.number}_${sale.customer}.png`;
-    link.href = canvas.toDataURL('image/png', 1.0);
-    link.click();
-    container.style.display = "none";
-  }).catch(err => {
-    alert("Gagal mengekspor struk: " + err.message);
-    container.style.display = "none";
-  });
-};
+    html2canvas(document.getElementById("receipt-card"), {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#ffffff",
+      logging: false
+    }).then(canvas => {
+      let link = document.createElement('a');
+      link.download = `Struk_${sale.number}_${sale.customer}.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.click();
+      container.style.display = "none";
+    }).catch(err => {
+      alert("Gagal mengekspor struk: " + err.message);
+      container.style.display = "none";
+    });
+  };
 
-  // --- FORM TRANSAKSI ---
+  // --- FORM TRANSAKSI & PRESET PRODUK ---
   window.openSaleModal = function() {
     itemCounter = 0;
     openModal("Tambah Penjualan", `
@@ -1266,16 +1231,25 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
 
   window.addItem = function() {
     itemCounter++; let id = itemCounter;
+    let productOptions = products.map(p => `<option value="${p.id}">${escapeHTML(p.name)} - ${formatRupiah(p.price)}</option>`).join("");
+    
     document.getElementById("items").insertAdjacentHTML("beforeend", `
       <div class="item-row" id="item-${id}">
         <div class="item-grid">
           <div class="item-field full">
+            <label>Pilih dari Katalog (Opsional)</label>
+            <select onchange="selectPresetProduct(${id}, this.value)">
+              <option value="">-- Pilih Produk Katalog --</option>
+              ${productOptions}
+            </select>
+          </div>
+          <div class="item-field full">
             <label>Nama Barang</label>
-            <input class="item-name" placeholder="Contoh: Banner 3x1m">
+            <input class="item-name" id="item-name-${id}" placeholder="Contoh: Banner 3x1m">
           </div>
           <div class="item-field">
             <label>Harga Satuan</label>
-            <input class="item-price" type="number" min="0" placeholder="50000" oninput="calculateTotal()">
+            <input class="item-price" id="item-price-${id}" type="number" min="0" placeholder="50000" oninput="calculateTotal()">
           </div>
           <div class="item-field">
             <label>Jumlah</label>
@@ -1289,6 +1263,16 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
       </div>
     `);
     calculateTotal();
+  };
+
+  window.selectPresetProduct = function(id, prodId) {
+    if(!prodId) return;
+    let p = products.find(x => x.id === prodId);
+    if(p) {
+      document.getElementById(`item-name-${id}`).value = p.name;
+      document.getElementById(`item-price-${id}`).value = p.price;
+      calculateTotal();
+    }
   };
 
   window.removeItem = function(id) {
@@ -1417,54 +1401,78 @@ button, input, textarea, select { font-family: inherit; border: none; outline: n
     }
   };
 
-function renderSales(data = sales) {
-  let list = document.getElementById("salesList");
-  if(!data.length){ list.innerHTML = `<div class="empty">Belum ada transaksi.</div>`; return; }
-  list.innerHTML = data.map(sale => {
-    let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
-    let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
+  // --- LOGIKA FILTER TANGGAL TRANSAKSI ---
+  window.applySalesDateFilter = function() {
+    let start = document.getElementById("filterStartDate").value;
+    let end = document.getElementById("filterEndDate").value;
     
-    // Tampilan harga total dengan sisa kekurangan jika ada
-    let priceDisplay = `
-      <div class="sale-price-container">
-        <div class="sale-total">${formatRupiah(sale.total)}</div>
-        ${sale.status === "Kekurangan" ? `<div class="sale-deficit">⚠️ Kekurangan: ${formatRupiah(sale.difference)}</div>` : ''}
-      </div>
-    `;
-    
-    let paymentInfo = '';
-    if(sale.status === "Kekurangan") {
-      paymentInfo = `
-        <div class="sale-info">Total Tagihan: <b>${formatRupiah(sale.total)}</b></div>
-        <div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b></div>
+    let filtered = sales.filter(s => {
+      if(!s.date) return true;
+      if(start && s.date < start) return false;
+      if(end && s.date > end) return false;
+      return true;
+    });
+
+    renderSales(filtered);
+  };
+
+  window.resetSalesDateFilter = function() {
+    document.getElementById("filterStartDate").value = "";
+    document.getElementById("filterEndDate").value = "";
+    renderSales(sales);
+  };
+
+  function renderSales(data = sales) {
+    let list = document.getElementById("salesList");
+    let sumTotal = data.reduce((s, x) => s + (x.total || 0), 0);
+    document.getElementById("salesTotal").textContent = formatRupiah(sumTotal);
+
+    if(!data.length){ list.innerHTML = `<div class="empty">Belum ada transaksi.</div>`; return; }
+    list.innerHTML = data.map(sale => {
+      let cls = sale.status === "Lunas" ? "lunas" : sale.status === "Kekurangan" ? "kurang" : "kembali";
+      let summary = sale.items ? sale.items.map(x => `${escapeHTML(x.name)} (${x.qty}×)`).join(", ") : "";
+      
+      let priceDisplay = `
+        <div class="sale-price-container">
+          <div class="sale-total">${formatRupiah(sale.total)}</div>
+          ${sale.status === "Kekurangan" ? `<div class="sale-deficit">⚠️ Kekurangan: ${formatRupiah(sale.difference)}</div>` : ''}
+        </div>
       `;
-    } else if(sale.status === "Kembalian") {
-      paymentInfo = `<div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · Kembalian ${formatRupiah(sale.difference)}</div>`;
-    }
-    
-    return `
-      <div class="sale-card">
-        <div class="sale-top">
-          <div>
-            <div class="sale-customer">${escapeHTML(sale.customer)}</div>
-            <div class="sale-number">${sale.number} · ${sale.date}</div>
+      
+      let paymentInfo = '';
+      if(sale.status === "Kekurangan") {
+        paymentInfo = `
+          <div class="sale-info">Total Tagihan: <b>${formatRupiah(sale.total)}</b></div>
+          <div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b></div>
+        `;
+      } else if(sale.status === "Kembalian") {
+        paymentInfo = `<div class="sale-info">Dibayar: <b>${formatRupiah(sale.payment)}</b> · Kembalian ${formatRupiah(sale.difference)}</div>`;
+      }
+      
+      return `
+        <div class="sale-card">
+          <div class="sale-top">
+            <div>
+              <div class="sale-customer">${escapeHTML(sale.customer)}</div>
+              <div class="sale-number">${sale.number} · ${sale.date}</div>
+            </div>
+            ${priceDisplay}
           </div>
-          ${priceDisplay}
+          <div class="sale-info">${summary}</div>
+          <span class="status ${cls}">${sale.status}</span>
+          ${paymentInfo}
+          ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
+          ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
+          <div class="action-row">
+            ${sale.phone ? `<button class="btn-sm btn-wa" onclick="sendWhatsApp('${sale.phone}','sale','${sale.id}')">📲 Kirim WA</button>` : ''}
+            <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Update Bayar</button>
+            <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
+            <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
+          </div>
         </div>
-        <div class="sale-info">${summary}</div>
-        <span class="status ${cls}">${sale.status}</span>
-        ${paymentInfo}
-        ${sale.dueDate?`<div class="sale-info">📅 Jatuh tempo: <b>${formatDate(sale.dueDate)}</b></div>`:""}
-        ${sale.description?`<div class="sale-info">📝 ${escapeHTML(sale.description)}</div>`:""}
-        <div class="action-row">
-          <button class="btn-sm btn-update" onclick="openUpdatePaymentModal('${sale.id}')"><svg class="icon-svg" style="width:14px;height:14px;"><use href="#icon-debt-collection-round"/></svg> Update Bayar</button>
-          <button class="btn-sm btn-export" onclick="exportReceiptPNG('${sale.id}')">🖼️ Struk PNG</button>
-          <button class="btn-sm btn-delete" onclick="deleteSale('${sale.id}')">Hapus</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
+      `;
+    }).join("");
+  }
 
   function renderFiles(data = files) {
     let list = document.getElementById("filesList");
@@ -1496,7 +1504,8 @@ function renderSales(data = sales) {
     document.getElementById("dashboardCustomers").textContent = customers.length;
     document.getElementById("dashboardJobs").textContent = jobs.filter(j=>!["Diambil","Dibatalkan"].includes(j.status)).length;
     document.getElementById("dashboardDebt").textContent = formatRupiah(sales.filter(s=>s.status==="Kekurangan").reduce((a,s)=>a+(Number(s.difference)||0),0));
-    document.getElementById("salesTotal").textContent = formatRupiah(total);
+    document.getElementById("dashboardProducts").textContent = products.length;
+    
     let recent = document.getElementById("recentSales");
     if(!sales.length){ recent.innerHTML = `<div class="card"><div class="empty">Belum ada transaksi.</div></div>`; return; }
     recent.innerHTML = sales.slice(0, 5).map(s => `<div class="sale-card"><div class="sale-top"><div><div class="sale-customer">${escapeHTML(s.customer)}</div><div class="sale-number">${s.number}</div></div><div class="sale-total">${formatRupiah(s.total)}</div></div><span class="status ${s.status==="Lunas"?"lunas":s.status==="Kekurangan"?"kurang":"kembali"}">${s.status}</span></div>`).join("");
@@ -1508,6 +1517,7 @@ function renderSales(data = sales) {
     else if(currentPage === "files") openFileModal();
     else if(currentPage === "customers") openCustomerModal();
     else if(currentPage === "jobs") openJobModal();
+    else if(currentPage === "products") openProductModal();
     else if(currentPage === "debts") openSaleModal();
     else openSaleModal();
   };
@@ -1524,39 +1534,11 @@ function renderSales(data = sales) {
     renderFiles();
     renderCustomers();
     renderJobs();
+    renderProducts();
     renderDebts();
   }
 
   document.getElementById("today").textContent = new Date().toLocaleDateString("id-ID", {weekday: "long", day: "numeric", month: "long", year: "numeric"});
-
-// ==========================================
-// FUNGSI KALKULASI KASIR
-// ==========================================
-
-function hitungTotal(subtotal, piutang) {
-    // Tanpa Math.abs dan tanpa pembatasan 0 agar hasil BISA MINUS
-    return subtotal - piutang;
-}
-
-// ==========================================
-// EVENT / PROSES TRANSAKSI
-// ==========================================
-
-function prosesTransaksi() {
-    let subtotalInput = parseFloat(document.getElementById('input-subtotal').value) || 0;
-    let piutangInput = parseFloat(document.getElementById('input-piutang').value) || 0;
-
-    let grandTotal = hitungTotal(subtotalInput, piutangInput);
-
-    // Gunakan formatRupiah yang sudah Anda buat sebelumnya di kode Anda
-    document.getElementById('display-total').innerText = formatRupiah(grandTotal);
-}
-// HAPUS BARIS INI:
-let qrisURL = "https://api.qrserver.com/...";
-let qrisImg = document.querySelector("img[alt*='QRIS']") || document.querySelector("#qris-img");
-if (qrisImg) {
-    qrisImg.src = qrisURL;
-}
 </script>
 </body>
 </html>
